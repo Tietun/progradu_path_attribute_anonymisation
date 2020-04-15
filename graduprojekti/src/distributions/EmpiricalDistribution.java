@@ -13,7 +13,7 @@ public class EmpiricalDistribution implements Distribution {
 	private static Random r = new Random();
 	private Map<Integer, Double> valueProbabilities;
 	private double mean;
-	private double variance; 
+	private double variance;
 	private double standardDeviation;
 
 	public EmpiricalDistribution(Map<Integer, Integer> valueInstances, int totalValueInstances) {
@@ -34,28 +34,31 @@ public class EmpiricalDistribution implements Distribution {
 			}
 			currentIndex++;
 		}
-		
-		this.mean = 0;
-		for(Entry<Integer, Double> valuePropability : this.valueProbabilities.entrySet()) {
-			mean = mean + (valuePropability.getKey() * valuePropability.getValue());
-		}
 
 		List<Integer> flatValues = new ArrayList<>();
-		for(Entry<Integer, Integer> valueInstance : valueInstances.entrySet()) {
-			for(int i = 0; i < valueInstance.getValue(); i++) {
+		for (Entry<Integer, Integer> valueInstance : valueInstances.entrySet()) {
+			for (int i = 0; i < valueInstance.getValue(); i++) {
 				flatValues.add(valueInstance.getKey());
 			}
 		}
+
+		this.mean = 0;
+		for (Integer value : flatValues) {
+			this.mean = this.mean + value;
+		}
+		this.mean = this.mean / flatValues.size();
+
 		double minusMeanSquaredSum = 0;
-		for(int i = 0 ; i < flatValues.size() ; i++) {
+		for (int i = 0; i < flatValues.size(); i++) {
 			double minusMeanSquared = (flatValues.get(i) - mean) * (flatValues.get(i) - mean);
 			minusMeanSquaredSum = minusMeanSquaredSum + minusMeanSquared;
 		}
-		
+
 		this.variance = minusMeanSquaredSum / flatValues.size();
 		this.standardDeviation = Math.sqrt(variance);
 	}
 
+	// TODO: Check why gave null
 	public Integer sample() {
 		double valueSeed = (1.0 * (r.nextInt(100) + 1)) / 100.0;
 		double currentProbabilitySum = 0.0;
@@ -68,11 +71,17 @@ public class EmpiricalDistribution implements Distribution {
 	}
 
 	public long sampleWithLaplaceRandomness(double minSDOfMean) {
-		double lapLaceScale = this.standardDeviation;
-		if(this.standardDeviation < minSDOfMean * mean) lapLaceScale = minSDOfMean * mean;
-		ExponentialDistribution randomnessDistribution = new ExponentialDistribution(lapLaceScale);
-		long shiftBy = Math.round(randomnessDistribution.sample());
-		if(r.nextBoolean()) shiftBy = 0 - shiftBy;
-		return this.sample() + shiftBy;
+		long result = -1;
+		while (result < 0) {
+			double lapLaceScale = this.standardDeviation;
+			if (this.standardDeviation < minSDOfMean * mean)
+				lapLaceScale = minSDOfMean * mean;
+			ExponentialDistribution randomnessDistribution = new ExponentialDistribution(lapLaceScale);
+			long shiftBy = Math.round(randomnessDistribution.sample());
+			if (r.nextBoolean())
+				shiftBy = 0 - shiftBy;
+			result = this.sample() + shiftBy;
+		}
+		return result;
 	}
 }
