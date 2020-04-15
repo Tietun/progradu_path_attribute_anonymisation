@@ -34,25 +34,9 @@ public abstract class PathElement {
 	}
 	
 	public EmpiricalDistribution getDurationDistribution() {
-		Map<Integer, Double> valueProbabilities = new HashMap<>();
-		
-		//For fixing possible double rounding errors
-		double probabilityReverseSum = 1.0;
-		
-		int mapSize = this.durationInstances.size();
-		int currentIndex = 0;
-		for(Entry<Integer, Integer> durationInstance : this.durationInstances.entrySet()) {
-			currentIndex++;
-			if(currentIndex >= mapSize) {
-				valueProbabilities.put(durationInstance.getKey(), probabilityReverseSum);
-			} else {
-				double probability = (1.0D * durationInstance.getValue()) / (1.0 * this.totalDurationInstances);
-				probabilityReverseSum = probabilityReverseSum - probability;
-				valueProbabilities.put(durationInstance.getKey(), probability);
-			}
-			currentIndex++;
-		}
-		
-		return new EmpiricalDistribution(valueProbabilities);
+		return new EmpiricalDistribution(this.durationInstances, this.totalDurationInstances);
 	}
+
+	public abstract String generateInstance(double minSDOfMean);
+
 }

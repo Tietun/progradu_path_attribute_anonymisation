@@ -30,4 +30,18 @@ public class Variant {
 		}
 		return false;
 	}
+
+	public String matchAndGenerate(String[] comparedPath, double minSDOfMean) {
+		if(comparedPath.length == this.elements.size()) {
+			for(int i = 0; i < comparedPath.length; i++) {
+				if(!this.elements.get(i).canMatch(comparedPath[i])) return null;
+			}
+			String generatedPath = "";
+			for(PathElement pathElement : this.elements) {
+				generatedPath = generatedPath + pathElement.generateInstance(minSDOfMean) + ":";
+			}
+			return generatedPath.substring(0, generatedPath.length());
+		}
+		return null;
+	}
 }

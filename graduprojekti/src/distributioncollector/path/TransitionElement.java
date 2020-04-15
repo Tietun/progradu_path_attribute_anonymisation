@@ -18,4 +18,9 @@ public class TransitionElement extends PathElement{
 		return false;
 	}
 
+	@Override
+	public String generateInstance(double minSDOfMean) {
+		return "(" + this.getDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	}
+
 }

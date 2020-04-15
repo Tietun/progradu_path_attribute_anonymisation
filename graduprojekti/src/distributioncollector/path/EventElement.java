@@ -18,4 +18,9 @@ public class EventElement extends PathElement{
 		return false;
 	}
 
+	@Override
+	public String generateInstance(double minSDOfMean) {
+		return this.activity + "(" + this.getDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	}
+
 }

@@ -16,5 +16,4 @@ public class UniformDistribution implements Distribution{
 	public Integer sample() {
 		return r.nextInt(max) + min;
 	}
-
 }
