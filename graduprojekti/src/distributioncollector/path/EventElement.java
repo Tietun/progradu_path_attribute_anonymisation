@@ -7,6 +7,10 @@ public class EventElement extends PathElement{
 		super(durationInstance);
 		this.activity = activity;
 	}
+	
+	public EventElement() {
+		super();
+	}
 
 	@Override
 	public boolean canMatch(String comparedElement) {
@@ -19,8 +23,15 @@ public class EventElement extends PathElement{
 	}
 
 	@Override
-	public String generateInstance(double minSDOfMean) {
-		return this.activity + "(" + this.getDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	public String generateInstance(double minSDOfMean) throws Exception {
+		return this.activity + "(" + this.generateDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	}
+
+	public String getActivity() {
+		return this.activity;
+	}
+	public void setActivity(String activity) {
+		this.activity = activity;
 	}
 
 }

@@ -11,6 +11,10 @@ public class TransitionElement extends PathElement{
 	public TransitionElement(int durationInstance) {
 		super(durationInstance);
 	}
+	
+	public TransitionElement() {
+		super();
+	}
 
 	@Override
 	public boolean canMatch(String comparedElement) {
@@ -19,8 +23,8 @@ public class TransitionElement extends PathElement{
 	}
 
 	@Override
-	public String generateInstance(double minSDOfMean) {
-		return "(" + this.getDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	public String generateInstance(double minSDOfMean) throws Exception {
+		return "(" + this.generateDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
 	}
 
 }
