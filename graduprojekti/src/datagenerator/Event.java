@@ -25,7 +25,7 @@ public class Event {
 
 
 	public String getSummary() {
-		return this.activity + "(" + (Duration.between(this.startTime, this.endTime).getSeconds()) + ")";
+		return this.activity + "(" + (Duration.between(this.startTime, this.endTime).getSeconds() / 60) + ")";
 	}
 
 

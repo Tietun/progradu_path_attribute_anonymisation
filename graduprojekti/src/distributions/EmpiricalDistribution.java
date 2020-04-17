@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.distribution.LaplaceDistribution;
 
 public class EmpiricalDistribution implements Distribution {
 	private static Random r = new Random();
@@ -22,22 +22,23 @@ public class EmpiricalDistribution implements Distribution {
 		this.valueProbabilities = new HashMap<>();
 		this.min = Double.MAX_VALUE;
 		this.max = Double.MIN_VALUE;
-		// For fixing possible double rounding errors
-		double probabilityReverseSum = 1.0;
-		int mapSize = valueInstances.size();
-		int currentIndex = 0;
+		Integer lastKey = null;
 		for (Entry<Integer, Integer> durationInstance : valueInstances.entrySet()) {
-			currentIndex++;
-			if (currentIndex >= mapSize) {
-				valueProbabilities.put(durationInstance.getKey(), probabilityReverseSum);
-			} else {
-				double probability = (1.0 * durationInstance.getValue()) / (1.0 * totalValueInstances);
-				probabilityReverseSum = probabilityReverseSum - probability;
-				valueProbabilities.put(durationInstance.getKey(), probability);
-			}
-			if(durationInstance.getKey() > this.max) this.max = durationInstance.getKey();
-			if(durationInstance.getKey() < this.min) this.mean = durationInstance.getKey();
-			currentIndex++;
+			lastKey = durationInstance.getKey();
+			double probability = (1.0 * durationInstance.getValue()) / (1.0 * totalValueInstances);
+			valueProbabilities.put(durationInstance.getKey(), probability);
+			if (durationInstance.getKey() > this.max)
+				this.max = durationInstance.getKey();
+			if (durationInstance.getKey() < this.min)
+				this.min = durationInstance.getKey();
+		}
+		double probabilitySum = 0;
+		for(double probability : this.valueProbabilities.values()) {
+			probabilitySum = probabilitySum + probability;
+		}
+		if(probabilitySum < 1) {
+			Double roundingNumber = valueProbabilities.get(lastKey);
+			valueProbabilities.put(lastKey, roundingNumber + (1 - probabilitySum));
 		}
 
 		List<Integer> flatValues = new ArrayList<>();
@@ -76,25 +77,21 @@ public class EmpiricalDistribution implements Distribution {
 
 	public long sampleWithLaplaceRandomness(double epsilon) throws Exception {
 		long result = -1;
-		while (result < 0) {
+		//while (result < 0) {
 			double range = this.max - this.min;
-			if(range <= 0) {
-				throw new Exception("Data contains events with non variable service/traveltimes. Ensure anonymization has taken place"); 
+			if (range <= 0) {
+				throw new Exception(
+						"Data contains events with non variable service/traveltimes. Ensure anonymization has taken place");
 			}
-			ExponentialDistribution randomnessDistribution = new ExponentialDistribution(range / epsilon);
+			LaplaceDistribution randomnessDistribution = new LaplaceDistribution(0, range / epsilon);
 			long shiftBy = Math.round(randomnessDistribution.sample());
-			if (r.nextBoolean()) shiftBy = 0 - shiftBy;
-			result = this.sample() + shiftBy;
-		}
+			Integer sample = this.sample();
+			if(sample == null) {
+				throw new Exception();
+			}
+			result = sample + shiftBy;
+		//}
 		return result;
-	}
-
-	public Map<Integer, Double> getValueProbabilities() {
-		return valueProbabilities;
-	}
-
-	public void setValueProbabilities(Map<Integer, Double> valueProbabilities) {
-		this.valueProbabilities = valueProbabilities;
 	}
 
 	public double getMean() {
@@ -120,6 +117,5 @@ public class EmpiricalDistribution implements Distribution {
 	public void setStandardDeviation(double standardDeviation) {
 		this.standardDeviation = standardDeviation;
 	}
-	
-	
+
 }

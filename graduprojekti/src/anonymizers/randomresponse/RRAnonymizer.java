@@ -82,7 +82,7 @@ public class RRAnonymizer {
 
 	}
 
-	private static String generatePath(String string, List<Variant> distributionData, double minSDOfMean) {
+	private static String generatePath(String string, List<Variant> distributionData, double minSDOfMean) throws Exception {
 		String generatedPath = null;
 		for(Variant variant : distributionData) {
 			generatedPath = variant.matchAndGenerate(string.split(":"), minSDOfMean);

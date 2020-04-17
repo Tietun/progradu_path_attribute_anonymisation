@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.math3.distribution.ExponentialDistribution;
+
 import distributions.UniformDistribution;
 
 public class CarePathway {
@@ -21,28 +23,28 @@ public class CarePathway {
 		this.needs = new ArrayList<>();
 		Random r = new Random();
 		CarePathway baseway = this
-				.withNeed(new WaitNeed(new UniformDistribution(0,525600)))
-				.withNeed(new EventNeed("A", new UniformDistribution(10, 120)))
-				.withNeed(new WaitNeed(new UniformDistribution(5,20)));
+				.withNeed(new WaitNeed(new ExponentialDistribution(259200)))
+				.withNeed(new EventNeed("A", new ExponentialDistribution(65)))
+				.withNeed(new WaitNeed(new ExponentialDistribution(12)));
 		int choiceSeed = r.nextInt(100);
 		if(choiceSeed != 0) {
 			baseway = baseway
-				.withNeed(new EventNeed("B1", new UniformDistribution(20, 30)));
+				.withNeed(new EventNeed("B1", new ExponentialDistribution(25)));
 		} else {
 			baseway = baseway
-				.withNeed(new EventNeed("B2", new UniformDistribution(25, 40)));
+				.withNeed(new EventNeed("B2", new ExponentialDistribution(33)));
 		}
 		baseway = baseway
-				.withNeed(new WaitNeed(new UniformDistribution(120, 180)))
-				.withNeed(new EventNeed("C", new UniformDistribution(60, 180)))
-				.withNeed(new WaitNeed(new UniformDistribution(180, 360)));
+				.withNeed(new WaitNeed(new ExponentialDistribution(150)))
+				.withNeed(new EventNeed("C", new ExponentialDistribution(120)))
+				.withNeed(new WaitNeed(new ExponentialDistribution(270)));
 		choiceSeed = r.nextInt(100);
 		if(choiceSeed != 0) {
 			baseway = baseway
-				.withNeed(new EventNeed("D1", new UniformDistribution(10, 40)));
+				.withNeed(new EventNeed("D1", new ExponentialDistribution(25)));
 		} else {
 			baseway = baseway
-				.withNeed(new EventNeed("D2", new UniformDistribution(15, 50)));
+				.withNeed(new EventNeed("D2", new ExponentialDistribution(33)));
 		}
 		
 		if (this.isHit()) {
@@ -51,11 +53,11 @@ public class CarePathway {
 				if (need instanceof EventNeed) {
 					EventNeed eNeed = (EventNeed) need;
 					LocalDateTime startTime = currentTime.plusMinutes(0);
-					currentTime = currentTime.plusMinutes(eNeed.getDuration());
+					currentTime = currentTime.plusMinutes(Math.round(eNeed.getDuration()));
 					customer.addEvent(new Event(eNeed.getName(), startTime, currentTime));
 				} else if (need instanceof WaitNeed) {
 					WaitNeed wNeed = (WaitNeed) need;
-					currentTime = currentTime.plusMinutes(wNeed.getDuration());
+					currentTime = currentTime.plusMinutes(Math.round(wNeed.getDuration()));
 				}
 			}
 		}

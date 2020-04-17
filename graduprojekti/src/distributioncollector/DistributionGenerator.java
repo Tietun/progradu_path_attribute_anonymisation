@@ -31,7 +31,7 @@ public class DistributionGenerator {
 			return;
 		}
 
-		double minSDOfMean = 0.1;
+		double epsilon = 1;
 
 		File dataFile = new File(args[0]);
 		File variantFile = new File(args[1]);
@@ -80,7 +80,7 @@ public class DistributionGenerator {
 				}
 				String retimedPath = null;
 				for (Variant variant : variants) {
-					retimedPath = variant.matchTimelessAndGenerate(splitLine[carePathIndex].split(":"), minSDOfMean);
+					retimedPath = variant.matchTimelessAndGenerate(splitLine[carePathIndex].split(":"), epsilon);
 					if (retimedPath != null)
 						break;
 				}

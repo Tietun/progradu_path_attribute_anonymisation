@@ -101,7 +101,9 @@ public class Customer {
 		for(Event event : this.events) {
 			line = line + event.getSummary() + ":";
 			if(this.events.size() > (this.events.indexOf(event) + 1)) {
-				line = line + "(" + (Duration.between(event.getEndTime(), this.events.get(this.events.indexOf(event) + 1).getStartTime()).getSeconds()) + "):";
+				Duration duration = Duration.between(event.getEndTime(), this.events.get(this.events.indexOf(event) + 1).getStartTime());
+				long durationSeconds = duration.getSeconds();
+				line = line + "(" + (durationSeconds / 60) + "):";
 			}
 		}
 		line = line.substring(0, line.length()-1) + System.lineSeparator();

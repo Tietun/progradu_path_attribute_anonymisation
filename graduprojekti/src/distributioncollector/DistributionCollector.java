@@ -30,6 +30,7 @@ public class DistributionCollector {
 		String extension = inFile.getPath().substring(extensionStart);
 		String pathWithoutExtension = inFile.getPath().substring(0, extensionStart);
 		File variantOutFile = new File(pathWithoutExtension + "_variants.json");
+		File distributionOutFile = new File(pathWithoutExtension + "_distributions.json");
 		File timelessOutFile = new File(pathWithoutExtension + "_timeless" + extension);
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -39,6 +40,7 @@ public class DistributionCollector {
 		try (
 				BufferedReader br = new BufferedReader(new FileReader(inFile));
 				BufferedWriter variantWriter = new BufferedWriter(new FileWriter(variantOutFile));
+				BufferedWriter distributionWriter = new BufferedWriter(new FileWriter(distributionOutFile));
 				BufferedWriter timelessWriter = new BufferedWriter(new FileWriter(timelessOutFile))
 			){
 			
@@ -78,8 +80,11 @@ public class DistributionCollector {
 				}
 				timelessLine = timelessLine.substring(0, timelessLine.length() - 1) + System.lineSeparator();
 				timelessWriter.write(timelessLine);
-				variantWriter.write(mapper.writeValueAsString(matchedVariant.getElementListWrapper()) + ";");
 				line = br.readLine();
+			}
+			for(Variant variant : variants) {
+				variantWriter.write(mapper.writeValueAsString(variant.getElementListWrapper()) + ";");
+				distributionWriter.write(mapper.writeValueAsString(variant.getDistributionWrapper()));
 			}
 			br.close();
 			timelessWriter.close();

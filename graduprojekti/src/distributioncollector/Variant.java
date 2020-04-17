@@ -5,6 +5,7 @@ import java.util.List;
 
 import distributioncollector.path.EventElement;
 import distributioncollector.path.PathElement;
+import distributions.EmpiricalDistribution;
 
 public class Variant {
 	List<PathElement> elements;
@@ -35,7 +36,7 @@ public class Variant {
 		return false;
 	}
 
-	public String matchAndGenerate(String[] comparedPath, double minSDOfMean) throws Exception {
+	public String matchAndGenerate(String[] comparedPath, double epsilon) throws Exception {
 		if (comparedPath.length == this.elements.size()) {
 			for (int i = 0; i < comparedPath.length; i++) {
 				if (!this.elements.get(i).canMatch(comparedPath[i]))
@@ -43,14 +44,14 @@ public class Variant {
 			}
 			String generatedPath = "";
 			for (PathElement pathElement : this.elements) {
-				generatedPath = generatedPath + pathElement.generateInstance(minSDOfMean) + ":";
+				generatedPath = generatedPath + pathElement.generateInstance(epsilon) + ":";
 			}
 			return generatedPath.substring(0, generatedPath.length());
 		}
 		return null;
 	}
 
-	public String matchTimelessAndGenerate(String[] comparedPath, double minSDOfMean) throws Exception {
+	public String matchTimelessAndGenerate(String[] comparedPath, double epsilon) throws Exception {
 		int comparedIndex = 0;
 		for(PathElement element : this.elements) {
 			if(element instanceof EventElement) {
@@ -61,7 +62,7 @@ public class Variant {
 		}
 		String generatedPath = "";
 		for (PathElement pathElement : this.elements) {
-			generatedPath = generatedPath + pathElement.generateInstance(minSDOfMean) + ":";
+			generatedPath = generatedPath + pathElement.generateInstance(epsilon) + ":";
 		}
 		return generatedPath.substring(0, generatedPath.length() - 1);
 	}
@@ -79,6 +80,17 @@ public class Variant {
 	public ElementListWrapper getElementListWrapper() {
 		ElementListWrapper wrapper = new ElementListWrapper();
 		wrapper.setElementList(elements);
+		return wrapper;
+	}
+
+	public DistributionWrapper getDistributionWrapper() {
+		DistributionWrapper wrapper = new DistributionWrapper();
+		wrapper.setVariant(this.getTimelessPath());
+		List<EmpiricalDistribution> distributions = new ArrayList<EmpiricalDistribution>();
+		for(PathElement element : this.elements) {
+			distributions.add(element.generateDurationDistribution());
+		}
+		wrapper.setDistributions(distributions);
 		return wrapper;
 	}
 

@@ -23,8 +23,8 @@ public class TransitionElement extends PathElement{
 	}
 
 	@Override
-	public String generateInstance(double minSDOfMean) throws Exception {
-		return "(" + this.generateDurationDistribution().sampleWithLaplaceRandomness(minSDOfMean) + ")";
+	public String generateInstance(double epsilon) throws Exception {
+		return "(" + this.generateDurationDistribution().sampleWithLaplaceRandomness(epsilon) + ")";
 	}
 
 }

@@ -1,16 +1,16 @@
 package datagenerator;
 
-import distributions.Distribution;
+import org.apache.commons.math3.distribution.ExponentialDistribution;
 
 public class WaitNeed implements NeedBase{
 
-	private Distribution waitDistribution;
+	private ExponentialDistribution waitDistribution;
 
-	public WaitNeed(Distribution waitDistribution) {
+	public WaitNeed(ExponentialDistribution waitDistribution) {
 		this.waitDistribution = waitDistribution;
 	}
 
-	public Integer getDuration() {
+	public double getDuration() {
 		return this.waitDistribution.sample();
 	}
 
