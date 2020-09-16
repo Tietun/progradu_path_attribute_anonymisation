@@ -17,17 +17,17 @@ import utils.Logger;
 
 public class DistributionGenerator {
 	private static final Logger LOG = new Logger(LogLevel.DEBUG);
-	
+
 	public static void main(String[] args) {
-		
+
 		LOG.info("DistributionGenerator uses the following Apache v2 -license libraries:");
 		LOG.info("Apache Commons Math v3.2: http://commons.apache.org/proper/commons-math/");
-		LOG.info(
-				"Jackson 2.10.0 (including core, annotations and databind): https://github.com/FasterXML/jackson");
+		LOG.info("Jackson 2.10.0 (including core, annotations and databind): https://github.com/FasterXML/jackson");
 		LOG.info("The Apache v2 license can be found at: https://www.apache.org/licenses/LICENSE-2.0");
 
 		if (args.length < 2) {
-			LOG.critical("Missing arguments. Please give arguments timelessData and variantData");
+			LOG.critical("Missing arguments. Please give arguments timelessData and variantData",
+					new IllegalArgumentException());
 			return;
 		}
 
@@ -35,10 +35,16 @@ public class DistributionGenerator {
 
 		File dataFile = new File(args[0]);
 		File variantFile = new File(args[1]);
-		int extensionStart = dataFile.getPath().lastIndexOf('.');
-		String extension = dataFile.getPath().substring(extensionStart);
-		String pathWithoutExtension = dataFile.getPath().substring(0, extensionStart);
-		File retimedOutFile = new File(pathWithoutExtension + "_retimed" + extension);
+		File retimedOutFile;
+		try {
+			int extensionStart = dataFile.getPath().lastIndexOf('.');
+			String extension = dataFile.getPath().substring(extensionStart);
+			String pathWithoutExtension = dataFile.getPath().substring(0, extensionStart);
+			retimedOutFile = new File(pathWithoutExtension + "_retimed" + extension);
+		} catch (Exception e) {
+			LOG.critical("Unexpected structure of argument", new IllegalArgumentException(e));
+			return;
+		}
 
 		ObjectMapper mapper = new ObjectMapper();
 
