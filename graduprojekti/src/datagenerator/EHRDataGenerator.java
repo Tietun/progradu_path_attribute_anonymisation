@@ -19,7 +19,7 @@ public class EHRDataGenerator {
 	public static void main(String[] args) {
 		LocalDateTime ehrStart = LocalDateTime.of(LocalDate.of(2017, 1, 1), LocalTime.of(0, 0, 0));
 		LocalDateTime ehrEnd = LocalDateTime.of(LocalDate.of(2019, 12, 31), LocalTime.of(23, 59, 59));
-		int customerCount = 10000;
+		int customerCount = 100000;
 		List<CarePathway> carePathways = CarePathwayConfigurations.getAll();
 		boolean print = true;
 		String filePath = "./data" + customerCount + ".csv";

@@ -77,7 +77,7 @@ public class EmpiricalDistribution implements Distribution {
 
 	public long sampleWithLaplaceRandomness(double epsilon) throws Exception {
 		long result = -1;
-		//while (result < 0) {
+		while (result < 0) {
 			double range = this.max - this.min;
 			if (range <= 0) {
 				throw new Exception(
@@ -90,7 +90,7 @@ public class EmpiricalDistribution implements Distribution {
 				throw new Exception();
 			}
 			result = sample + shiftBy;
-		//}
+		}
 		return result;
 	}
 

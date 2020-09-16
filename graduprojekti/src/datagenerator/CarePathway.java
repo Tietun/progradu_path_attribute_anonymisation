@@ -46,6 +46,11 @@ public class CarePathway {
 			baseway = baseway
 				.withNeed(new EventNeed("D2", new ExponentialDistribution(33)));
 		}
+		choiceSeed = r.nextInt(5);
+		baseway
+			.withNeed(new WaitNeed(new ExponentialDistribution(300)))
+			.withNeed(new EventNeed("E" + choiceSeed, new ExponentialDistribution(130)));
+		
 		
 		if (this.isHit()) {
 			LocalDateTime currentTime = start.minusDays(0);
