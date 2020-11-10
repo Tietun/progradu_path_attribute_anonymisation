@@ -15,6 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.LogLevel;
 import utils.Logger;
 
+/**
+ * Collects distributions from a csv file that is in path attribute format
+ * @author Erkka Nurmi
+ *
+ */
 public class DistributionCollector {
 	private static final Logger LOG = new Logger(LogLevel.DEBUG);
 
@@ -38,8 +43,11 @@ public class DistributionCollector {
 		try {
 			String extension = inFile.getPath().substring(extensionStart);
 			String pathWithoutExtension = inFile.getPath().substring(0, extensionStart);
+			//This file will contain the distribution info in variant format
 			variantOutFile = new File(pathWithoutExtension + "_variants.json");
+			//This file will contain the distribution info in a more easily manipulated format
 			distributionOutFile = new File(pathWithoutExtension + "_distributions.json");
+			//This file will be identical to the source file except times have been removed from the path attribute
 			timelessOutFile = new File(pathWithoutExtension + "_timeless" + extension);
 		} catch (Exception e) {
 			LOG.critical("Unexpected structure of argument", new IllegalArgumentException(e));
@@ -50,6 +58,7 @@ public class DistributionCollector {
 
 		List<Variant> variants = new ArrayList<>();
 
+		//Reads the source file line by line while writing the output files
 		try (BufferedReader br = new BufferedReader(new FileReader(inFile));
 				BufferedWriter variantWriter = new BufferedWriter(new FileWriter(variantOutFile));
 				BufferedWriter distributionWriter = new BufferedWriter(new FileWriter(distributionOutFile));

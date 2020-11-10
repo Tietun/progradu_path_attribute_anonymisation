@@ -14,6 +14,11 @@ import java.util.List;
 import utils.LogLevel;
 import utils.Logger;
 
+/**
+ * 
+ * @author Era2
+ *
+ */
 public class TimestampNormalizer {
 	private static final Logger LOG = new Logger(LogLevel.DEBUG);
 
@@ -36,8 +41,10 @@ public class TimestampNormalizer {
 			return;
 		}
 
-		try (BufferedReader dataReader = new BufferedReader(new FileReader(dataFile));
-				BufferedWriter normalizedWriter = new BufferedWriter(new FileWriter(normalizedFile))) {
+		try (
+				BufferedReader dataReader = new BufferedReader(new FileReader(dataFile));
+				BufferedWriter normalizedWriter = new BufferedWriter(new FileWriter(normalizedFile))
+			) {
 
 			String line = dataReader.readLine();
 			String[] splitLine = line.split(";");

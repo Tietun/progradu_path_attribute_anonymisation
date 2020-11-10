@@ -1,5 +1,15 @@
 package distributions;
 
+/**
+ * Interface for integer (represented by Long) distributions
+ * @author Erkka Nurmi
+ *
+ */
 public interface Distribution {
-	public Integer sample();
+	
+	/**
+	 * Samples the distribution
+	 * @return A value sampled from the distribution
+	 */
+	public Long sample();
 }

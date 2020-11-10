@@ -4,22 +4,33 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.apache.commons.math3.distribution.ExponentialDistribution;
 
-import distributions.UniformDistribution;
-
+/**
+ * Represents a care pathway. Care pathway is a process of care events
+ * @author Erkka Nurmi
+ *
+ */
 public class CarePathway {
+
+	static Random r = new Random();
 	private List<NeedBase> needs;
 	private int percantagePossibility;
 	
+	/**
+	 * Constructor
+	 * @param percentagePossibility How likely is this carepathway to occur during a person's life
+	 */
 	public CarePathway(int percentagePossibility) {
 		this.needs = new ArrayList<>();
 		this.percantagePossibility = percentagePossibility;
 	}
 
-	public void addToCustomerByDefaultProbability(Customer customer, LocalDateTime start, LocalDateTime end) {
-
+	/**
+	 * Initializes the care pathway with the default needs used in the study
+	 * @return This after initialization
+	 */
+	public CarePathway initializeWithDefaultPath() {
 		this.needs = new ArrayList<>();
 		Random r = new Random();
 		CarePathway baseway = this
@@ -50,8 +61,15 @@ public class CarePathway {
 		baseway
 			.withNeed(new WaitNeed(new ExponentialDistribution(300)))
 			.withNeed(new EventNeed("E" + choiceSeed, new ExponentialDistribution(130)));
-		
-		
+		return this;
+	}
+	
+	/**
+	 * Adds to customer if the probability is hit
+	 * @param customer Customer to whom this CarePathway is added
+	 * @param start Start time of the CarePathway
+	 */
+	public void addToCustomerByDefaultProbability(Customer customer, LocalDateTime start) {
 		if (this.isHit()) {
 			LocalDateTime currentTime = start.minusDays(0);
 			for (NeedBase need : this.needs) {
@@ -68,13 +86,21 @@ public class CarePathway {
 		}
 	}
 	
+	/**
+	 * Adds a need to the CarePathway
+	 * @param need The need to be added
+	 * @return This after adding
+	 */
 	public CarePathway withNeed(NeedBase need) {
 		this.needs.add(need);
 		return this;
 	}
 
+	/**
+	 * Is the probability a hit
+	 * @return Is the probability a hit
+	 */
 	private boolean isHit() {
-		Random r = new Random();
 		int seed = r.nextInt(100);
 		if(this.percantagePossibility > seed) return true;
 		return false;

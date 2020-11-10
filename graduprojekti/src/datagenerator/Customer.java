@@ -9,27 +9,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Represents a Health/Social care customer
+ * @author Erkka Nurmi
+ *
+ */
 public class Customer {
 	private static Random rand = new Random();
 	private String nationalID;
 	private LocalDate dateOfBirth;
 	private Sex sex;
+	@SuppressWarnings("unused") // May be used later
 	private Map<String, String> customerAttributes;
 	private List<Event> events;
+	//Check symbols for finnish national identification number
 	private static char[] checkSymbols = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y'};
 
+	/**
+	 * Constructor
+	 * @param currentTime The time "now". Used to generate the customer's age in relation to birth year
+	 */
 	public Customer(LocalDateTime currentTime) {
 		this.setAgeAndSex(currentTime);
 		this.customerAttributes = new HashMap<String, String>();
 		this.events = new ArrayList<>();
 	}
 	
+	/**
+	 * Sets the age and sex for the customer
+	 * @param currentTime The time "now". Used to generate the customer's age in relation to birth year
+	 */
 	private void setAgeAndSex(LocalDateTime currentTime) {
 		int yearOfBirth = 2020;
 		while(yearOfBirth > 2010) {
 			AgeSex ageSex = AgeDistributions.finlandCurrent.getRandomAgeAndSex();
-			this.sex = ageSex.sex;
-			yearOfBirth = currentTime.getYear() - ageSex.age;
+			this.sex = ageSex.getSex();
+			yearOfBirth = currentTime.getYear() - ageSex.getAge();
 		}
 		int dayOfBirth;
 		int monthOfBirth = 0;
@@ -58,6 +73,7 @@ public class Customer {
 		if(monthOfBirthS.length() <= 1) monthOfBirthS = "0" + monthOfBirthS;
 		String YearOfBirthS = ("" + yearOfBirth).substring(2, 4);
 		
+		//If this breaks in the year 3000 here's your issue
 		char separator = '+';
 		if(yearOfBirth >= 1900) separator = '-';
 		if(yearOfBirth >= 2000) separator = 'A';
@@ -74,6 +90,10 @@ public class Customer {
 		this.nationalID = dayOfBirthS + monthOfBirthS + YearOfBirthS + separator + randomPartS + checkSymbol;
 	}
 
+	/**
+	 * Returns the events relating to this customer in a csv-friendly String
+	 * @return CSV friendly String containing info on the customer's events
+	 */
 	public String getEventLines() {
 		String lines = "";
 		for(Event e : this.events) {
@@ -92,10 +112,18 @@ public class Customer {
 		return lines;
 	}
 
+	/**
+	 * Add's an event to the Customer
+	 * @param event The event to be added
+	 */
 	public void addEvent(Event event) {
 		this.events.add(event);
 	}
 
+	/**
+	 * Returns the Customer's events in the path attribute format
+	 * @return The Customer's events in the path attribute format
+	 */
 	public String getPathAttribute() {
 		String line = "";
 		for(Event event : this.events) {
@@ -110,6 +138,10 @@ public class Customer {
 		return line;
 	}
 
+	/**
+	 * Returns the start time of the customer's first event
+	 * @return The start time of the customer's first event
+	 */
 	public String getFirstStart() {
 		if(this.events.size() > 0) {
 			return this.events.get(0).startTime.toString().replace('T', ' ') + ":00";

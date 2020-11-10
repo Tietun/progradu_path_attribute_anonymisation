@@ -2,11 +2,21 @@ package datagenerator;
 
 import java.util.Random;
 
+/**
+ * A distribution of age and sex
+ * @author Erkka Nurmi
+ *
+ */
 public class AgeDistribution {
 	private static Random rand = new Random();
 	private int[] countCumulativeFemale; //All positive or 0;
 	private int[] reverseCountCumulativeMale; //All negative;
 	
+	/**
+	 * Constructor
+	 * @param countCumulativeFemale Cumulative count of females by age (index)
+	 * @param countCumulativeMale Cumulative count of males by age (index)
+	 */
 	public AgeDistribution(int[] countCumulativeFemale,int[] countCumulativeMale) {
 		this.countCumulativeFemale = countCumulativeFemale;
 		this.reverseCountCumulativeMale = new int[countCumulativeMale.length];
@@ -15,6 +25,10 @@ public class AgeDistribution {
 		}
 	}
 	
+	/**
+	 * Samples the distribution for an age and a sex
+	 * @return Wrapper for the generated age and sex
+	 */
 	public AgeSex getRandomAgeAndSex() {
 		int femaleMax = countCumulativeFemale[countCumulativeFemale.length - 1];
 		int maleMin = reverseCountCumulativeMale[reverseCountCumulativeMale.length - 1]; 

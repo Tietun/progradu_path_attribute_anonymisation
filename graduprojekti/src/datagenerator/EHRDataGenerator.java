@@ -12,11 +12,21 @@ import java.util.List;
 import utils.LogLevel;
 import utils.Logger;
 
+/**
+ * Generator for health/social care pseudo data
+ * @author Erkka Nurmi
+ *
+ */
 public class EHRDataGenerator {
 
 	private static final Logger LOG = new Logger(LogLevel.DEBUG);
 
+	/**
+	 * Generates health/social care pseudo data into a file in the path attribute form
+	 * @param args
+	 */
 	public static void main(String[] args) {
+		//Parameters hard coded for now
 		LocalDateTime ehrStart = LocalDateTime.of(LocalDate.of(2017, 1, 1), LocalTime.of(0, 0, 0));
 		LocalDateTime ehrEnd = LocalDateTime.of(LocalDate.of(2019, 12, 31), LocalTime.of(23, 59, 59));
 		int customerCount = 100000;
@@ -28,7 +38,7 @@ public class EHRDataGenerator {
 			for (int i = 0; i < customerCount; i++) {
 				Customer customer = new Customer(ehrEnd);
 				for (CarePathway carePathway : carePathways) {
-					carePathway.addToCustomerByDefaultProbability(customer, ehrStart, ehrEnd);
+					carePathway.addToCustomerByDefaultProbability(customer, ehrStart);
 				}
 				if (print) {
 					String outLine = i + ";" + customer.getFirstStart() + ";" + customer.getPathAttribute();

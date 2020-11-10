@@ -9,6 +9,11 @@ import java.util.Random;
 
 import org.apache.commons.math3.distribution.LaplaceDistribution;
 
+/**
+ * Represents a discrete empirical distribution of integer (represented by Long) values
+ * @author Erkka Nurmi
+ *
+ */
 public class EmpiricalDistribution implements Distribution {
 	private static Random r = new Random();
 	private Map<Integer, Double> valueProbabilities;
@@ -18,6 +23,12 @@ public class EmpiricalDistribution implements Distribution {
 	private double min;
 	private double max;
 
+	/**
+	 * Constructor
+	 * @param valueInstances Map of value instances. Key = empirical value, value = empirical frequency
+	 * @param totalValueInstances Total number of value instances. Should be equal to the sum of empirical frequencies.
+	 * Is given separately so that there's no need to calculate this repeatedly
+	 */
 	public EmpiricalDistribution(Map<Integer, Integer> valueInstances, int totalValueInstances) {
 		this.valueProbabilities = new HashMap<>();
 		this.min = Double.MAX_VALUE;
@@ -64,18 +75,25 @@ public class EmpiricalDistribution implements Distribution {
 		this.standardDeviation = Math.sqrt(variance);
 	}
 
-	public Integer sample() {
+	@Override
+	public Long sample() {
 		double valueSeed = (1.0 * (r.nextInt(100) + 1)) / 100.0;
 		double currentProbabilitySum = 0.0;
 		for (Entry<Integer, Double> valueProbability : valueProbabilities.entrySet()) {
 			currentProbabilitySum = currentProbabilitySum + valueProbability.getValue();
 			if (currentProbabilitySum >= valueSeed)
-				return valueProbability.getKey();
+				return 0L + valueProbability.getKey();
 		}
 		return null;
 	}
 
-	public long sampleWithLaplaceRandomness(double epsilon) throws Exception {
+	/**
+	 * Samples the distribution with Laplace randomness
+	 * @param epsilon Epsilon value for the Laplace randomness
+	 * @return Value sampled from the distribution
+	 * @throws Exception Thrown if only one value is possible or if the sampled value would some how be null
+	 */
+	public Long sampleWithLaplaceRandomness(double epsilon) throws Exception {
 		long result = -1;
 		while (result < 0) {
 			double range = this.max - this.min;
@@ -85,7 +103,7 @@ public class EmpiricalDistribution implements Distribution {
 			}
 			LaplaceDistribution randomnessDistribution = new LaplaceDistribution(0, range / epsilon);
 			long shiftBy = Math.round(randomnessDistribution.sample());
-			Integer sample = this.sample();
+			Long sample = this.sample();
 			if(sample == null) {
 				throw new Exception();
 			}
@@ -94,28 +112,28 @@ public class EmpiricalDistribution implements Distribution {
 		return result;
 	}
 
+	/**
+	 * Gets the mean of the distribution
+	 * @return mean of the distribution
+	 */
 	public double getMean() {
 		return mean;
 	}
-
-	public void setMean(double mean) {
-		this.mean = mean;
-	}
-
+	
+	/**
+	 * Gets the variance of the distribution
+	 * @return variance of the distribution
+	 */
 	public double getVariance() {
 		return variance;
 	}
 
-	public void setVariance(double variance) {
-		this.variance = variance;
-	}
-
+	/**
+	 * Gets the standard deviation of the distribution
+	 * @return standard deviation of the distribution
+	 */
 	public double getStandardDeviation() {
 		return standardDeviation;
-	}
-
-	public void setStandardDeviation(double standardDeviation) {
-		this.standardDeviation = standardDeviation;
 	}
 
 }

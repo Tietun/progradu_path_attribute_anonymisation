@@ -15,13 +15,22 @@ import distributioncollector.Variant;
 import utils.LogLevel;
 import utils.Logger;
 
+/**
+ * Experimental random response anonymizer for carepath-attribute formatted data.
+ * Randomizes the durations in the carepath. To be used after the carepaths have been anonymized.
+ * @author Erkka Nurmi
+ *
+ */
 public class RRAnonymizer {
 	private static Logger log = new Logger(LogLevel.DEBUG);
 
 	public static void main(String[] args) {
 		
+		//Hard coded inputs for now
+		//Chance of randomizing a line in percents (1.0 = 1%)
 		double randomizationChance = 1.0;
-		double minSDOfMean = 0.1;
+		//Epsilon value for Laplace randomness. In other words the minimum used standard deviation
+		double laplaceEpsilon = 0.1;
 		
 		if (args.length == 0) {
 			log.critical("No input file specified. Exiting");
@@ -30,16 +39,20 @@ public class RRAnonymizer {
 		
 		Random r = new Random();
 
+		//Separating file extension from file name
 		File inFile = new File(args[0]);
 		int extensionStart = inFile.getPath().lastIndexOf('.');
 		String extension = inFile.getPath().substring(extensionStart);
 		String pathWithoutExtension = inFile.getPath().substring(0, extensionStart);
+		
+		//Creating output file
 		File outFile = new File(pathWithoutExtension + "_RRanonymized" + extension);
 
 		try (
 				BufferedReader br = new BufferedReader(new FileReader(inFile));
 				BufferedWriter bw = new BufferedWriter(new FileWriter(outFile));
 				) {
+			//Locating carepath attribute column
 			String line = br.readLine();
 			bw.write(line + System.lineSeparator());
 			String[] splitLine = line.split(";");
@@ -51,8 +64,10 @@ public class RRAnonymizer {
 				}
 			}
 			if(carePathIndex == -1) throw new Exception("Carepath column not found");
+			//Collecting possible values
 			List<Variant> distributionData = collectDistributionData(inFile, carePathIndex);
 			line = br.readLine();
+			//Filling output file with input data + randomness
 			while(line != null) {
 				String outLine = "";
 				if ((1.0 + r.nextInt(100))/100 > randomizationChance) {
@@ -62,7 +77,7 @@ public class RRAnonymizer {
 					for(int i = 0; i < carePathIndex; i++) {
 						outLine = outLine + splitLine[i] + ";";
 					}
-					outLine = outLine + generatePath(splitLine[carePathIndex], distributionData, minSDOfMean);
+					outLine = outLine + generatePath(splitLine[carePathIndex], distributionData, laplaceEpsilon);
 					for(int i = carePathIndex + 1; i < splitLine.length; i++) {
 						outLine = outLine + splitLine[i] + ";";
 					}
@@ -82,19 +97,35 @@ public class RRAnonymizer {
 
 	}
 
-	private static String generatePath(String string, List<Variant> distributionData, double minSDOfMean) throws Exception {
+	/**
+	 * Generates random carepath attribute value
+	 * @param string Existing carepath attribute to match
+	 * @param distributionData List of collected connected discrete distributions in form of variants
+	 * @param laplaceEpsilon epsilon to be used in generating Laplace randomness
+	 * @return Generated carepath attribute with randomness
+	 * @throws Exception An exception may be thrown when sampling distributions 
+	 */
+	private static String generatePath(String string, List<Variant> distributionData, double laplaceEpsilon) throws Exception {
 		String generatedPath = null;
 		for(Variant variant : distributionData) {
-			generatedPath = variant.matchAndGenerate(string.split(":"), minSDOfMean);
+			generatedPath = variant.matchAndGenerate(string.split(":"), laplaceEpsilon);
 			if(generatedPath != null) return generatedPath;
 		}
 		return generatedPath;
 	}
 
+	/**
+	 * Collects discrete duration distribution per variant
+	 * @param inFile Input file from which the duration data is collected
+	 * @param targetColumn index of the target column in the file
+	 * @return List of the collected variants each containing their distribution data
+	 * @throws FileNotFoundException Thrown if the target file is not found
+	 * @throws IOException Thrown if there's a problem reading the file
+	 */
 	private static List<Variant> collectDistributionData(File inFile, int targetColumn) throws FileNotFoundException, IOException {
 		List<Variant> variants = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(inFile))) {
-			//Skipping first line
+			//Skipping header line
 			String line = br.readLine();
 			line = br.readLine();
 			while (line != null) {

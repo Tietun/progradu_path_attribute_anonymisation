@@ -7,9 +7,18 @@ import distributioncollector.path.EventElement;
 import distributioncollector.path.PathElement;
 import distributions.EmpiricalDistribution;
 
+/**
+ * An object representing a possible path through a care pathway
+ * @author Erkka Nurmi
+ *
+ */
 public class Variant {
 	List<PathElement> elements;
 
+	/**
+	 * Constructor
+	 * @param pathElements String containing a durationless path attribute for the variant
+	 */
 	public Variant(String[] pathElements) {
 		this.elements = new ArrayList<>();
 		for (String pathElement : pathElements) {
@@ -17,10 +26,20 @@ public class Variant {
 		}
 	}
 
+	/**
+	 * Constructor
+	 * @param wrapper Wrapper containing the PathElements that are assigned to this Variant
+	 */
 	public Variant(ElementListWrapper wrapper) {
 		this.elements = wrapper.getElementList();
 	}
 
+	/**
+	 * Sees if the given path attribute (with durations) can match this variant
+	 * and if so adds the duration to the relevant distributions
+	 * @param comparedPath Path attribute to compare
+	 * @return Whether the compared path matched or not
+	 */
 	public boolean matchPathAndAdd(String[] comparedPath) {
 		if (comparedPath.length == this.elements.size()) {
 			for (int i = 0; i < comparedPath.length; i++) {
@@ -36,7 +55,15 @@ public class Variant {
 		return false;
 	}
 
-	public String matchAndGenerate(String[] comparedPath, double epsilon) throws Exception {
+	/**
+	 * Sees if the given path attribute (with durations) matches this variant
+	 * and if so generates a version of the path attribute with durations
+	 * @param comparedPath Path attribute to compare
+	 * @param laplaceEpsilon Epsilon for Laplace randomness
+	 * @return Null if not a match; path attribute with durations if match
+	 * @throws Exception Possible exception from distribution sampling
+	 */
+	public String matchAndGenerate(String[] comparedPath, double laplaceEpsilon) throws Exception {
 		if (comparedPath.length == this.elements.size()) {
 			for (int i = 0; i < comparedPath.length; i++) {
 				if (!this.elements.get(i).canMatch(comparedPath[i]))
@@ -44,13 +71,21 @@ public class Variant {
 			}
 			String generatedPath = "";
 			for (PathElement pathElement : this.elements) {
-				generatedPath = generatedPath + pathElement.generateInstance(epsilon) + ":";
+				generatedPath = generatedPath + pathElement.generateInstance(laplaceEpsilon) + ":";
 			}
 			return generatedPath.substring(0, generatedPath.length());
 		}
 		return null;
 	}
 
+	/**
+	 * Sees if the given path attribute (without durations) matches this variant
+	 * and if so generates a version of the path attribute with durations
+	 * @param comparedPath Path attribute to compare (durationless)
+	 * @param laplaceEpsilon Epsilon for Laplace randomness
+	 * @return Null if not a match; path attribute with durations if match
+	 * @throws Exception Possible exception from distribution sampling
+	 */
 	public String matchTimelessAndGenerate(String[] comparedPath, double epsilon) throws Exception {
 		int comparedIndex = 0;
 		for(PathElement element : this.elements) {
@@ -67,6 +102,10 @@ public class Variant {
 		return generatedPath.substring(0, generatedPath.length() - 1);
 	}
 
+	/**
+	 * Returns a path attribute matching this variant without durations
+	 * @return A path attribute matching this variant without durations
+	 */
 	public String getTimelessPath() {
 		String timelessPath = "";
 		for (PathElement element : this.elements) {
@@ -77,12 +116,20 @@ public class Variant {
 		return timelessPath.substring(0, timelessPath.length());
 	}
 
+	/**
+	 * Returns the path elements of this variant
+	 * @return The path elements of this variant
+	 */
 	public ElementListWrapper getElementListWrapper() {
 		ElementListWrapper wrapper = new ElementListWrapper();
 		wrapper.setElementList(elements);
 		return wrapper;
 	}
 
+	/**
+	 * Returns the distribution wrapper of this variant
+	 * @return The distribution wrapper of this variant
+	 */
 	public DistributionWrapper getDistributionWrapper() {
 		DistributionWrapper wrapper = new DistributionWrapper();
 		wrapper.setVariant(this.getTimelessPath());

@@ -15,6 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.LogLevel;
 import utils.Logger;
 
+/**
+ * This class generates new duration info to a timeless path attribute formatted data
+ * @author Erkka Nurmi
+ *
+ */
 public class DistributionGenerator {
 	private static final Logger LOG = new Logger(LogLevel.DEBUG);
 
@@ -40,6 +45,7 @@ public class DistributionGenerator {
 			int extensionStart = dataFile.getPath().lastIndexOf('.');
 			String extension = dataFile.getPath().substring(extensionStart);
 			String pathWithoutExtension = dataFile.getPath().substring(0, extensionStart);
+			//This is the output file
 			retimedOutFile = new File(pathWithoutExtension + "_retimed" + extension);
 		} catch (Exception e) {
 			LOG.critical("Unexpected structure of argument", new IllegalArgumentException(e));
@@ -53,6 +59,7 @@ public class DistributionGenerator {
 		try (BufferedReader dataReader = new BufferedReader(new FileReader(dataFile));
 				BufferedReader variantReader = new BufferedReader(new FileReader(variantFile));
 				BufferedWriter reTimedWriter = new BufferedWriter(new FileWriter(retimedOutFile))) {
+			//We gather variant info and frequencies
 			String allVariantData = "";
 			String line = variantReader.readLine();
 			while (line != null) {
@@ -60,6 +67,7 @@ public class DistributionGenerator {
 				line = variantReader.readLine();
 			}
 			String[] variantElementsLists = allVariantData.split(";");
+			//We generate variant objects
 			for (String variantElementsList : variantElementsLists) {
 				if (!variantElementsList.equals("")) {
 					variants.add(new Variant(mapper.readValue(variantElementsList, ElementListWrapper.class)));
@@ -78,6 +86,7 @@ public class DistributionGenerator {
 				}
 			}
 			line = dataReader.readLine();
+			//We generate output lines with the generated variants
 			while (line != null) {
 				splitLine = line.split(";");
 				String retimedLine = "";
