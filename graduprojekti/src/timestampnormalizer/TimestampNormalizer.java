@@ -15,8 +15,8 @@ import utils.LogLevel;
 import utils.Logger;
 
 /**
- * 
- * @author Era2
+ * Normalizes a file from path attribute format to normal csv
+ * @author Erkka Nurmi
  *
  */
 public class TimestampNormalizer {
@@ -35,12 +35,14 @@ public class TimestampNormalizer {
 		try {
 			String extension = dataFile.getPath().substring(extensionStart);
 			String pathWithoutExtension = dataFile.getPath().substring(0, extensionStart);
+			//This is where the normalized data will be saved
 			normalizedFile = new File(pathWithoutExtension + "_normalized" + extension);
 		} catch (Exception e) {
 			LOG.critical("Unexpected structure of argument", new IllegalArgumentException(e));
 			return;
 		}
 
+		//Reading data line by line and writing to output
 		try (
 				BufferedReader dataReader = new BufferedReader(new FileReader(dataFile));
 				BufferedWriter normalizedWriter = new BufferedWriter(new FileWriter(normalizedFile))
@@ -77,6 +79,7 @@ public class TimestampNormalizer {
 						lineStart = lineStart + splitLine[i] + ";";
 				}
 
+				//Getting the normalized lines
 				List<String> timestampStrings = getTimeStampStrings(splitLine[startTimeIndex],
 						splitLine[carePathIndex]);
 
@@ -102,6 +105,12 @@ public class TimestampNormalizer {
 		}
 	}
 
+	/**
+	 * Creates and returns normalized time stamp lines for a given path attribute value
+	 * @param startTimeString Time of the first time stamp as String in format YYYY-MM-DD hh-mm-ss
+	 * @param pathString Path attribute value to normalize
+	 * @return List of normalized time stamps
+	 */
 	private static List<String> getTimeStampStrings(String startTimeString, String pathString) {
 		String[] splitStart = startTimeString.split(" ");
 		String[] splitDate = splitStart[0].split("-");
