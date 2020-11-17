@@ -7,7 +7,7 @@ package utils;
  */
 public class Logger {
 	
-	private LogLevel loglevel;
+	private final LogLevel loglevel;
 	
 	/**
 	 * Constructor

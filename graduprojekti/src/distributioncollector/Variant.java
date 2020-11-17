@@ -13,7 +13,7 @@ import distributions.EmpiricalDistribution;
  *
  */
 public class Variant {
-	List<PathElement> elements;
+	private List<PathElement> elements;
 
 	/**
 	 * Constructor

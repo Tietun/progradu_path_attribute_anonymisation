@@ -10,7 +10,7 @@ public enum Sex {
 	FEMALE
 	/*
 	 * Can be extended for inclusivity.
-	 * Just males and females for now since age statistics were not available for others
+	 * Just males and females for now, since age statistics were not available for others
 	 * and the national identification number can only handle these
 	 */
 }

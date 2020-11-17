@@ -13,7 +13,7 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  */
 public class CarePathway {
 
-	static Random r = new Random();
+	private static Random r = new Random();
 	private List<NeedBase> needs;
 	private int percantagePossibility;
 	

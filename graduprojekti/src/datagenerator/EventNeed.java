@@ -8,8 +8,8 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  *
  */
 public class EventNeed implements NeedBase{
-	String name;
-	ExponentialDistribution eventTimeDistribution;
+	private String name;
+	private ExponentialDistribution eventTimeDistribution;
 	
 	/**
 	 * Constructor
