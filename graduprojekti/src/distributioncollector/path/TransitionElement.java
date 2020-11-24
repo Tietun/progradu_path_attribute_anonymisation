@@ -4,7 +4,7 @@ package distributioncollector.path;
  * 
  * @author Erkka Nurmi
  * Object representing a transition in a customers care path
- * NOTE: Could instead instantiate superclass (make it non abstract), but used subclass for readability
+ * NOTE: Could instead instantiate superclass (make it non-abstract), but used subclass for readability
  */
 public class TransitionElement extends PathElement{
 

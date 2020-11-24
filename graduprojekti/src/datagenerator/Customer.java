@@ -51,10 +51,10 @@ public class Customer {
 		int[] monthDays;
 		if(yearOfBirth % 400 == 0 || (yearOfBirth % 100 != 0 && yearOfBirth % 4 == 0)) {
 			dayOfBirth = rand.nextInt(366) + 1;
-			monthDays = Globals.monthDaysLeap;
+			monthDays = Globals.MONTH_DAYS_LEAP;
 		} else {
 			dayOfBirth = rand.nextInt(365) + 1;
-			monthDays = Globals.monthDays;
+			monthDays = Globals.MONTH_DAYS;
 		}
 		for(int i = 0; i < monthDays.length; i++) {
 			if(dayOfBirth <= monthDays[i]) {
