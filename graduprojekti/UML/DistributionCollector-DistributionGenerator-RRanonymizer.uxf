@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>9</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>198</y>
+      <w>378</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>DistributionGenerator
+--
+--
++void main(String[] args)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>279</x>
+      <y>459</y>
+      <w>432</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>Variant
+--
+-List&lt;PathElement&gt; elements
+--
++&lt;&lt;constructor&gt;&gt;Variant(String[] pathElements)
++Variant(ElementListWrapper wrapper)
++boolean matchPathAndAdd(String[] comparedPath)
++String matchAndGenerate(String[] comparedPath, double laplaceEpsilon)
++String matchTimelessAndGenerate(String[] comparedPath, double epsilon)
++String getTimelessPath()
++ElementListWrapper getElementListWrapper()
++DistributionWrapper getDistributionWrapper()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>441</y>
+      <w>378</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>DistributionWrapper
+--
+-List&lt;EmpiricalDistribution&gt; distributions
+--
++List&lt;EmpiricalDistribution&gt; getDistributions()
++void setDistributions(List&lt;EmpiricalDistribution&gt; distribution)
++String getVariant()
++void setVariant(String variant)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>558</y>
+      <w>378</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>ElementListWrapper
+--
+-List&lt;PathElement&gt; elementList
+--
++List&lt;PathElement&gt; getElementList()
++setElementList(List&lt;PathElement&gt; elementList)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>675</y>
+      <w>378</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>EventElement
+--
+--
++&lt;&lt;constructor&gt;&gt;EventElement(String activity, int durationInstance)
++&lt;&lt;constructor&gt;&gt;EventElement()
++String getActivity()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>756</y>
+      <w>378</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>TransitionElement
+--
+--
++&lt;&lt;constructor&gt;&gt;TransitionElement()
++&lt;&lt;constructor&gt;&gt;TransitionElement(int durationInstance)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>279</x>
+      <y>648</y>
+      <w>432</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>/PathElement/
+--
+--
+-PathElement(int durationInstance)
++&lt;&lt;constructor&gt;&gt;PathElement()
++boolean canMatch(String comparedElement)
++void addDurationInstance(Integer durationInstance)
++PathElement create(String pathElement)
++EmpiricalDistribution generateDurationDistribution()
++String generateInstance(double laplaceEpsilon)
++Map&lt;Integer, Integer&gt; getDurationInstances()
++void setDurationInstances(Map&lt;Integer, Integer&gt; durationInstances)
++int getTotalDurationInstances()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>684</x>
+      <y>684</y>
+      <w>80</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>27;63;54;63;54;27;63;27</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>684</x>
+      <y>720</y>
+      <w>80</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>27;27;54;27;54;63;63;63</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>684</x>
+      <y>468</y>
+      <w>80</w>
+      <h>89</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>27;72;54;72;54;27;63;27</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>684</x>
+      <y>513</y>
+      <w>80</w>
+      <h>89</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>27;27;54;27;54;72;63;72</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>468</x>
+      <y>585</y>
+      <w>44</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>27;27;27;63</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>468</x>
+      <y>189</y>
+      <w>296</w>
+      <h>287</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..n</panel_attributes>
+    <additional_attributes>279;27;27;27;27;270</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>279</y>
+      <w>378</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>DistributionCollector
+--
+--
++void main(String[] args)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>747</x>
+      <y>360</y>
+      <w>378</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>RRAnonymizer
+--
+--
++void main(String[] args)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>468</x>
+      <y>270</y>
+      <w>296</w>
+      <h>206</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1</panel_attributes>
+    <additional_attributes>279;27;27;27;27;189</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>468</x>
+      <y>351</y>
+      <w>296</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1</panel_attributes>
+    <additional_attributes>279;27;27;27;27;108</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>747</x>
+      <y>117</y>
+      <w>378</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>TimestampNormalizer
+--
+--
++void main(String[] args)</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

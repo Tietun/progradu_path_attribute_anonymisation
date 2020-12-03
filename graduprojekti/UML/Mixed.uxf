@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>7</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>343</x>
+      <y>259</y>
+      <w>245</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>/Distribution/
+--
+--
++Long sample()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>616</x>
+      <y>287</y>
+      <w>441</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>EmpiricalDistribution
+--
+--
++&lt;&lt;constructor&gt;&gt;EmpiricalDistribution(Map&lt;Integer, Integer&gt; valueInstances, int totalValueInstances)
++&lt;&lt;constructor&gt;&gt;Long sampleWithLaplaceRandomness(double epsilon)
++double getMean()
++double getVariance()
++double getStandardDeviation()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>616</x>
+      <y>238</y>
+      <w>441</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>UniformDistribution
+--
+--
++&lt;&lt;constructor&gt;&gt;UniformDistribution(long min, long max)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>567</x>
+      <y>259</y>
+      <w>62</w>
+      <h>83</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;42;21;42;70;49;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>567</x>
+      <y>238</y>
+      <w>62</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>21;42;42;42;42;21;49;21</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>343</x>
+      <y>350</y>
+      <w>245</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Logger
+--
+-LogLevel loglevel
+--
++&lt;&lt;constructor&gt;&gt;Logger(LogLevel loglevel)
++void trace(String message)
++void debug(String message)
++void info(String message)
++void warning(String message)
++void error(String message, Exception e)
++void critical(String message, Exception e)
++void error(String message)
++void critical(String message)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>616</x>
+      <y>399</y>
+      <w>70</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumaration&gt;&gt;
+LogLevel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>567</x>
+      <y>392</y>
+      <w>62</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;49;21</additional_attributes>
+  </element>
+</diagram>

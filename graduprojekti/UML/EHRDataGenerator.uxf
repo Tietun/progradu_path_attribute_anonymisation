@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>532</x>
+      <y>210</y>
+      <w>378</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>EHRDataGenerator
+--
+--
++void main(String[] args)
+bg=light_blue
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>343</y>
+      <w>385</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>CarePathway
+--
+-List&lt;NeedBase&gt; needs
+--
++&lt;&lt;constructor&gt;&gt; CarePathway(int percentagePossibility)
++CarePathway initializeWithDefaultPath()
++void addToCustomerByDefaultProbability(Customer customer, LocalDateTime start)
++CarePathway withNeed(NeedBase need)
++boolean isHit()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>273</y>
+      <w>196</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>CarePathwayConfigurations
+--
++List&lt;CarePathway&gt; carePathWays
+--
++List&lt;CarePathway&gt; getAll()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>455</y>
+      <w>385</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Customer
+--
+-Sex sex
+-List&lt;Event&gt; events
+--
++&lt;&lt;constructor&gt;&gt;Customer(LocalDateTime currentTime)
++String getEventLines()
++void addEvent(Event event)
++String getPathAttribute()
++String getFirstStart()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>399</x>
+      <y>301</y>
+      <w>34</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;21;42</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>399</x>
+      <y>413</y>
+      <w>34</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;21;42</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>637</x>
+      <y>301</y>
+      <w>70</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>/NeedBase/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>735</x>
+      <y>553</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Sex</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>735</x>
+      <y>364</y>
+      <w>385</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>WaitNeed
+--
+--
++&lt;&lt;constructor&gt;&gt;WaitNeed(ExponentialDistribution waitDistribution)
++double getDuration()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>735</x>
+      <y>301</y>
+      <w>385</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>EventNeed
+--
+--
++&lt;&lt;constructor&gt;&gt;EventNeed(String name, ExponentialDistribution eventTimeDistribution)
++double getDuration()
++String getName()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>686</x>
+      <y>483</y>
+      <w>62</w>
+      <h>97</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>21;21;42;21;42;84;49;84</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>686</x>
+      <y>287</y>
+      <w>62</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;49;21</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>686</x>
+      <y>287</y>
+      <w>62</w>
+      <h>111</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>21;21;42;21;42;98;49;98</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>399</x>
+      <y>224</y>
+      <w>335</w>
+      <h>62</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2= 1</panel_attributes>
+    <additional_attributes>322;21;322;35;21;35;21;49</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>651</x>
+      <y>301</y>
+      <w>34</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;42;21;21</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>455</y>
+      <w>385</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>Event
+--
+--
++&lt;&lt;Constructor&gt;&gt;Event(String name, LocalDateTime startTime, LocalDateTime endTime)
++String getValueLine()
++String getSummary()
++LocalDateTime getEndTime()
++LocalDateTime getStartTime()
++String getActivity()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>686</x>
+      <y>462</y>
+      <w>62</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;42;42;42;42;21;49;21</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>574</y>
+      <w>196</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>AgeSex
+--
+--
++&lt;&lt;constructor&gt;&gt;AgeSex(int age, Sex sex)
++int getAge()
++Sex getSex()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>651</y>
+      <w>168</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>AgeDistributions
+--
++AgeDistribution finlandCurrent
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>322</x>
+      <y>651</y>
+      <w>385</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>AgeDistribution
+--
+--
++&lt;&lt;constructor&gt;&gt; AgeDistribution(int[] countCumulativeFemale,int[] countCumulativeMale)
++AgeSex getRandomAgeAndSex()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>399</x>
+      <y>532</y>
+      <w>34</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;21;42</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>371</x>
+      <y>609</y>
+      <w>86</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>&lt;generates</panel_attributes>
+    <additional_attributes>49;21;49;42</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>686</x>
+      <y>651</y>
+      <w>62</w>
+      <h>34</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+</panel_attributes>
+    <additional_attributes>21;21;49;21</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>588</x>
+      <y>532</y>
+      <w>34</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>21;21;21;119</additional_attributes>
+  </element>
+</diagram>
