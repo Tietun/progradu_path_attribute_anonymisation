@@ -107,13 +107,13 @@ public class Variant {
 	 * @return A path attribute matching this variant without durations
 	 */
 	public String getTimelessPath() {
-		String timelessPath = "";
+		StringBuilder timelessPath = new StringBuilder();
 		for (PathElement element : this.elements) {
 			if (element instanceof EventElement) {
-				timelessPath = timelessPath + ((EventElement) element).getActivity() + ":";
+				timelessPath.append(((EventElement) element).getActivity()).append(":");
 			}
 		}
-		return timelessPath.substring(0, timelessPath.length());
+		return timelessPath.substring(0, timelessPath.length() - 1);
 	}
 
 	/**

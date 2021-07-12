@@ -48,7 +48,12 @@ public class DistributionCollector {
 			//This file will contain the distribution info in a more easily manipulated format
 			distributionOutFile = new File(pathWithoutExtension + "_distributions.json");
 			//This file will be identical to the source file except times have been removed from the path attribute
+			/** Version excluding original path-attribute field. Used in Experiment 1
 			timelessOutFile = new File(pathWithoutExtension + "_timeless" + extension);
+			 **/
+			/** Version including original path-attribute field. Used in Experiment 2 to 4 **/
+			 timelessOutFile = new File(pathWithoutExtension + "_timelessNew" + extension);
+
 		} catch (Exception e) {
 			LOG.critical("Unexpected structure of argument", new IllegalArgumentException(e));
 			return;
@@ -77,9 +82,9 @@ public class DistributionCollector {
 			line = br.readLine();
 			while (line != null) {
 				splitLine = line.split(";");
-				String timelessLine = "";
+				StringBuilder timelessLine = new StringBuilder();
 				for (int i = 0; i < carePathIndex; i++) {
-					timelessLine = timelessLine + splitLine[i] + ";";
+					timelessLine.append(splitLine[i]).append(";");
 				}
 				String[] pathElements = splitLine[carePathIndex].split(":");
 				Variant matchedVariant = null;
@@ -93,13 +98,18 @@ public class DistributionCollector {
 					matchedVariant = new Variant(pathElements);
 					variants.add(matchedVariant);
 				}
-				timelessLine = timelessLine + matchedVariant.getTimelessPath();
-
+				/** Version excluding original path-attribute field. Used in Experiment 1
+				timelessLine.append(matchedVariant.getTimelessPath());
 				for (int i = carePathIndex + 1; i < splitLine.length; i++) {
 					timelessLine = timelessLine + splitLine[i] + ";";
-				}
-				timelessLine = timelessLine.substring(0, timelessLine.length() - 1) + System.lineSeparator();
-				timelessWriter.write(timelessLine);
+				}**/
+				/** Version including original path-attribute field. Used in Experiments 2 to 4 **/
+				timelessLine.append(matchedVariant.getTimelessPath()).append(";");
+				 for (int i = carePathIndex; i < splitLine.length; i++) {
+				 timelessLine.append(splitLine[i]).append(";");
+				 }
+				timelessLine = new StringBuilder(timelessLine.substring(0, timelessLine.length() - 1) + System.lineSeparator());
+				timelessWriter.write(timelessLine.toString());
 				line = br.readLine();
 			}
 			for (Variant variant : variants) {
@@ -111,15 +121,8 @@ public class DistributionCollector {
 			variantWriter.close();
 			LOG.info("Ready");
 
-		} catch (FileNotFoundException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
-		} catch (IOException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
 		} catch (Exception e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
+			LOG.critical("A critical error has occurred: ", e);
 		}
 	}
 }
