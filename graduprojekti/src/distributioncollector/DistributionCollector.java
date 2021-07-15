@@ -63,7 +63,7 @@ public class DistributionCollector {
 				BufferedWriter timelessWriter = new BufferedWriter(new FileWriter(timelessOutFile))) {
 
 			String line = br.readLine();
-			timelessWriter.write(line + System.lineSeparator());
+			timelessWriter.write(line + ";TimelessPath" + System.lineSeparator());
 			String[] splitLine = line.split(";");
 			int carePathIndex = -1;
 			for (int i = 0; i < splitLine.length; i++) {

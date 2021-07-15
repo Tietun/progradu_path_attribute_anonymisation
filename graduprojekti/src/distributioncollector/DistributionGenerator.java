@@ -69,13 +69,15 @@ public class DistributionGenerator {
 			variantReader.close();
 
 			line = dataReader.readLine();
-			reTimedWriter.write(line + System.lineSeparator());
+			reTimedWriter.write(line.replace(";TimelessPath", "") + System.lineSeparator());
 			String[] splitLine = line.split(";");
 			int carePathIndex = -1;
+			int originalCarePathIndex = -1;
 			for (int i = 0; i < splitLine.length; i++) {
 				if (splitLine[i].equals("Path")) {
+					originalCarePathIndex = i;
+				} else if (splitLine[i].equals("TimelessPath")) {
 					carePathIndex = i;
-					break;
 				}
 			}
 			line = dataReader.readLine();
@@ -84,13 +86,17 @@ public class DistributionGenerator {
 				splitLine = line.split(";");
 				StringBuilder retimedLine = new StringBuilder();
 				for (int i = 0; i < carePathIndex; i++) {
-					retimedLine.append(splitLine[i]).append(";");
+					if(i != originalCarePathIndex) retimedLine.append(splitLine[i]).append(";");
 				}
 				String retimedPath = null;
-				for (Variant variant : variants) {
-					retimedPath = variant.matchTimelessAndGenerate(splitLine[carePathIndex].split(":"), epsilon);
-					if (retimedPath != null)
-						break;
+				if(structureMatches(splitLine[carePathIndex], splitLine[originalCarePathIndex])){
+					retimedPath = splitLine[originalCarePathIndex];
+				} else  {
+					for (Variant variant : variants) {
+						retimedPath = variant.matchTimelessAndGenerate(splitLine[carePathIndex].split(":"), epsilon);
+						if (retimedPath != null)
+							break;
+					}
 				}
 				retimedLine.append(retimedPath).append(";");
 				for (int i = carePathIndex + 1; i < splitLine.length; i++) {
@@ -110,6 +116,11 @@ public class DistributionGenerator {
 			LOG.critical("A critical error has occurred: ", e);
 			e.printStackTrace();
 		}
+	}
+
+	private static boolean structureMatches(String timelessCarePath, String originalCarePath) {
+		return timelessCarePath.equals(originalCarePath.replaceAll("\\([0-9]*\\)", "").replaceAll("::", ":"));
+
 	}
 
 }
