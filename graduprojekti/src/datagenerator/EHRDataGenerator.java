@@ -1,16 +1,15 @@
 package datagenerator;
 
+import utils.LogLevel;
+import utils.Logger;
+
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-
-import utils.LogLevel;
-import utils.Logger;
 
 /**
  * Generator for health/social care pseudo data
@@ -23,7 +22,7 @@ public class EHRDataGenerator {
 
 	/**
 	 * Generates health/social care pseudo data into a file in the path attribute form
-	 * @param args
+	 * @param args unused
 	 */
 	public static void main(String[] args) {
 		//Parameters hard coded for now
@@ -31,23 +30,19 @@ public class EHRDataGenerator {
 		LocalDateTime ehrEnd = LocalDateTime.of(LocalDate.of(2019, 12, 31), LocalTime.of(23, 59, 59));
 		int customerCount = 100000;
 		List<CarePathway> carePathways = CarePathwayConfigurations.getAll();
-		boolean print = true;
 		String filePath = "./data" + customerCount + ".csv";
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filePath)))) {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
 			bw.write("ID;StartTime;Path" + System.lineSeparator());
 			for (int i = 0; i < customerCount; i++) {
 				Customer customer = new Customer(ehrEnd);
 				for (CarePathway carePathway : carePathways) {
 					carePathway.addToCustomerByDefaultProbability(customer, ehrStart);
 				}
-				if (print) {
-					String outLine = i + ";" + customer.getFirstStart() + ";" + customer.getPathAttribute();
-					bw.write(outLine);
-				}
+				String outLine = i + ";" + customer.getFirstStart() + ";" + customer.getPathAttribute();
+				bw.write(outLine);
 			}
-			bw.close();
 		} catch (IOException e) {
-			LOG.critical("A critical error has occured: ", e);
+			LOG.critical("A critical error has occurred: ", e);
 			return;
 		} 
 		LOG.info("Ready");

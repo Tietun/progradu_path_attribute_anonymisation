@@ -1,18 +1,12 @@
 package timestampnormalizer;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import utils.LogLevel;
+import utils.Logger;
+
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import utils.LogLevel;
-import utils.Logger;
 
 /**
  * Normalizes a file from path attribute format to normal csv
@@ -30,7 +24,7 @@ public class TimestampNormalizer {
 		}
 
 		File dataFile = new File(args[0]);
-		File normalizedFile = null;
+		File normalizedFile;
 		int extensionStart = dataFile.getPath().lastIndexOf('.');
 		try {
 			String extension = dataFile.getPath().substring(extensionStart);
@@ -60,23 +54,23 @@ public class TimestampNormalizer {
 				}
 			}
 
-			String outLine = "";
+			StringBuilder outLine = new StringBuilder();
 			for (int i = 0; i < splitLine.length; i++) {
 				if ((i != startTimeIndex) && (i != carePathIndex))
-					outLine = outLine + splitLine[i] + ";";
+					outLine.append(splitLine[i]).append(";");
 			}
-			outLine = outLine + "Activity;StartTime;EndTime" + System.lineSeparator();
+			outLine.append("Activity;StartTime;EndTime").append(System.lineSeparator());
 
-			normalizedWriter.write(outLine);
+			normalizedWriter.write(outLine.toString());
 
 			line = dataReader.readLine();
 			while (line != null) {
 				splitLine = line.split(";");
 
-				String lineStart = "";
+				StringBuilder lineStart = new StringBuilder();
 				for (int i = 0; i < splitLine.length; i++) {
 					if ((i != startTimeIndex) && (i != carePathIndex))
-						lineStart = lineStart + splitLine[i] + ";";
+						lineStart.append(splitLine[i]).append(";");
 				}
 
 				//Getting the normalized lines
@@ -93,14 +87,10 @@ public class TimestampNormalizer {
 			normalizedWriter.close();
 			LOG.info("Ready");
 
-		} catch (FileNotFoundException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
 		} catch (IOException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
+			LOG.critical("A critical error has occurred: ", e);
 		} catch (Exception e) {
-			LOG.critical("A critical error has occured: ", e);
+			LOG.critical("A critical error has occurred: ", e);
 			e.printStackTrace();
 		}
 	}
@@ -119,7 +109,7 @@ public class TimestampNormalizer {
 				Integer.parseInt(splitDate[2]), Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[1]),
 				Integer.parseInt(splitTime[2]));
 		String[] splitPath = pathString.split(":");
-		List<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<>();
 		for (String pathElement : splitPath) {
 			if (pathElement.charAt(0) == '(') {
 				String minuteString = pathElement.replace("(", "").replace(")", "");

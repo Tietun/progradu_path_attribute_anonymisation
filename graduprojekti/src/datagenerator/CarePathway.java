@@ -13,17 +13,17 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  */
 public class CarePathway {
 
-	private static Random r = new Random();
+	private static final Random r = new Random();
 	private List<NeedBase> needs;
-	private int percantagePossibility;
+	private final int percentagePossibility;
 	
 	/**
 	 * Constructor
-	 * @param percentagePossibility How likely is this carepathway to occur during a person's life
+	 * @param percentagePossibility How likely is this care pathway to occur during a person's life
 	 */
 	public CarePathway(int percentagePossibility) {
 		this.needs = new ArrayList<>();
-		this.percantagePossibility = percentagePossibility;
+		this.percentagePossibility = percentagePossibility;
 	}
 
 	/**
@@ -33,32 +33,32 @@ public class CarePathway {
 	public CarePathway initializeWithDefaultPath() {
 		this.needs = new ArrayList<>();
 		Random r = new Random();
-		CarePathway baseway = this
+		CarePathway basePathway = this
 				.withNeed(new WaitNeed(new ExponentialDistribution(259200)))
 				.withNeed(new EventNeed("A", new ExponentialDistribution(65)))
 				.withNeed(new WaitNeed(new ExponentialDistribution(12)));
 		int choiceSeed = r.nextInt(100);
 		if(choiceSeed != 0) {
-			baseway = baseway
+			basePathway = basePathway
 				.withNeed(new EventNeed("B1", new ExponentialDistribution(25)));
 		} else {
-			baseway = baseway
+			basePathway = basePathway
 				.withNeed(new EventNeed("B2", new ExponentialDistribution(33)));
 		}
-		baseway = baseway
+		basePathway = basePathway
 				.withNeed(new WaitNeed(new ExponentialDistribution(150)))
 				.withNeed(new EventNeed("C", new ExponentialDistribution(120)))
 				.withNeed(new WaitNeed(new ExponentialDistribution(270)));
 		choiceSeed = r.nextInt(100);
 		if(choiceSeed != 0) {
-			baseway = baseway
+			basePathway = basePathway
 				.withNeed(new EventNeed("D1", new ExponentialDistribution(25)));
 		} else {
-			baseway = baseway
+			basePathway = basePathway
 				.withNeed(new EventNeed("D2", new ExponentialDistribution(33)));
 		}
 		choiceSeed = r.nextInt(5);
-		baseway
+		basePathway
 			.withNeed(new WaitNeed(new ExponentialDistribution(300)))
 			.withNeed(new EventNeed("E" + choiceSeed, new ExponentialDistribution(130)));
 		return this;
@@ -102,8 +102,7 @@ public class CarePathway {
 	 */
 	private boolean isHit() {
 		int seed = r.nextInt(100);
-		if(this.percantagePossibility > seed) return true;
-		return false;
+		return this.percentagePossibility > seed;
 	}
 
 }

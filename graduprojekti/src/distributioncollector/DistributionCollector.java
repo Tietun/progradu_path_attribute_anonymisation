@@ -1,19 +1,12 @@
 package distributioncollector;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import utils.LogLevel;
 import utils.Logger;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Collects distributions from a csv file that is in path attribute format
@@ -51,7 +44,7 @@ public class DistributionCollector {
 			/** Version excluding original path-attribute field. Used in Experiment 1
 			timelessOutFile = new File(pathWithoutExtension + "_timeless" + extension);
 			 **/
-			/** Version including original path-attribute field. Used in Experiment 2 to 4 **/
+			 //Version including original path-attribute field. Used in Experiment 2 to 4 **/
 			 timelessOutFile = new File(pathWithoutExtension + "_timelessNew" + extension);
 
 		} catch (Exception e) {
@@ -103,11 +96,11 @@ public class DistributionCollector {
 				for (int i = carePathIndex + 1; i < splitLine.length; i++) {
 					timelessLine = timelessLine + splitLine[i] + ";";
 				}**/
-				/** Version including original path-attribute field. Used in Experiments 2 to 4 **/
-				timelessLine.append(matchedVariant.getTimelessPath()).append(";");
+				// Version including original path-attribute field. Used in Experiments 2 to 4
 				 for (int i = carePathIndex; i < splitLine.length; i++) {
-				 timelessLine.append(splitLine[i]).append(";");
+				 	timelessLine.append(splitLine[i]).append(";");
 				 }
+				timelessLine.append(matchedVariant.getTimelessPath()).append(";");
 				timelessLine = new StringBuilder(timelessLine.substring(0, timelessLine.length() - 1) + System.lineSeparator());
 				timelessWriter.write(timelessLine.toString());
 				line = br.readLine();
