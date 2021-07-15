@@ -12,7 +12,7 @@ public class AgeDistributions {
 	 * Sourced from findikaattori.fi, updated 31.12.2019.
 	 * https://findikaattori.fi/fi/14#:~:text=Tilastokeskuksen%20v%C3%A4est%C3%B6rakennetilaston%20mukaan%20Suomessa%20oli,kolmessa%20vuodessa%20100%20000%20henkil%C3%B6ll%C3%A4
 	 */
-	public static AgeDistribution finlandCurrent = new AgeDistribution(
+	public static final AgeDistribution FINLAND_CURRENT = new AgeDistribution(
 			new int[]{22496,45711,70810,97439,125040,153918,183122,213332,243780,274673,305496,335919,365938,396155,425786,455218,
 					484330,512666,541454,570227,599538,628544,658881,689973,722492,756276,790147,825132,859836,895085,929639,964265,
 					997132,1030429,1064738,1100054,1136036,1171362,1205579,1239398,1273103,1306624,1340686,1374709,1407945,1439967,

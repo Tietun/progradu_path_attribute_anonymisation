@@ -9,7 +9,7 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  */
 public class WaitNeed implements NeedBase{
 
-	private ExponentialDistribution waitDistribution;
+	private final ExponentialDistribution waitDistribution;
 
 	/**
 	 * Constructor

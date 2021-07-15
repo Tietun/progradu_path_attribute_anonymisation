@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
  *
  */
 public class Event {
-	String activity;
-	LocalDateTime startTime;
-	LocalDateTime endTime;
+	private final String activity;
+	private final LocalDateTime startTime;
+	private final LocalDateTime endTime;
 	
 	/**
 	 * Constructor

@@ -8,8 +8,8 @@ import org.apache.commons.math3.distribution.ExponentialDistribution;
  *
  */
 public class EventNeed implements NeedBase{
-	private String name;
-	private ExponentialDistribution eventTimeDistribution;
+	private final String name;
+	private final ExponentialDistribution eventTimeDistribution;
 	
 	/**
 	 * Constructor
@@ -23,11 +23,10 @@ public class EventNeed implements NeedBase{
 	
 	/**
 	 * Returns a sampled duration for the event / activity
-	 * @return
+	 * @return Duration value sample
 	 */
 	public double getDuration() {
-		double sample = eventTimeDistribution.sample();
-		return sample;
+		return eventTimeDistribution.sample();
 	}
 	
 	/**

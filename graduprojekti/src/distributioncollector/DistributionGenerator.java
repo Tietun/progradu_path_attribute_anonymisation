@@ -1,19 +1,12 @@
 package distributioncollector;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import utils.LogLevel;
 import utils.Logger;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class generates new duration info to a timeless path attribute formatted data
@@ -60,13 +53,13 @@ public class DistributionGenerator {
 				BufferedReader variantReader = new BufferedReader(new FileReader(variantFile));
 				BufferedWriter reTimedWriter = new BufferedWriter(new FileWriter(retimedOutFile))) {
 			//We gather variant info and frequencies
-			String allVariantData = "";
+			StringBuilder allVariantData = new StringBuilder();
 			String line = variantReader.readLine();
 			while (line != null) {
-				allVariantData = allVariantData + line;
+				allVariantData.append(line);
 				line = variantReader.readLine();
 			}
-			String[] variantElementsLists = allVariantData.split(";");
+			String[] variantElementsLists = allVariantData.toString().split(";");
 			//We generate variant objects
 			for (String variantElementsList : variantElementsLists) {
 				if (!variantElementsList.equals("")) {
@@ -89,9 +82,9 @@ public class DistributionGenerator {
 			//We generate output lines with the generated variants
 			while (line != null) {
 				splitLine = line.split(";");
-				String retimedLine = "";
+				StringBuilder retimedLine = new StringBuilder();
 				for (int i = 0; i < carePathIndex; i++) {
-					retimedLine = retimedLine + splitLine[i] + ";";
+					retimedLine.append(splitLine[i]).append(";");
 				}
 				String retimedPath = null;
 				for (Variant variant : variants) {
@@ -99,26 +92,22 @@ public class DistributionGenerator {
 					if (retimedPath != null)
 						break;
 				}
-				retimedLine = retimedLine + retimedPath + ";";
+				retimedLine.append(retimedPath).append(";");
 				for (int i = carePathIndex + 1; i < splitLine.length; i++) {
-					retimedLine = retimedLine + splitLine[i] + ";";
+					retimedLine.append(splitLine[i]).append(";");
 				}
-				retimedLine = retimedLine.substring(0, retimedLine.length() - 1) + System.lineSeparator();
-				reTimedWriter.write(retimedLine);
+				retimedLine = new StringBuilder(retimedLine.substring(0, retimedLine.length() - 1) + System.lineSeparator());
+				reTimedWriter.write(retimedLine.toString());
 				line = dataReader.readLine();
 			}
 			dataReader.close();
 			reTimedWriter.close();
 			LOG.info("Ready");
 
-		} catch (FileNotFoundException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
 		} catch (IOException e) {
-			LOG.critical("A critical error has occured: ", e);
-			return;
+			LOG.critical("A critical error has occurred: ", e);
 		} catch (Exception e) {
-			LOG.critical("A critical error has occured: ", e);
+			LOG.critical("A critical error has occurred: ", e);
 			e.printStackTrace();
 		}
 	}

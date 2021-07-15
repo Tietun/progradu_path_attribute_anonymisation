@@ -13,7 +13,7 @@ import distributions.EmpiricalDistribution;
  *
  */
 public class Variant {
-	private List<PathElement> elements;
+	private final List<PathElement> elements;
 
 	/**
 	 * Constructor
@@ -69,9 +69,9 @@ public class Variant {
 				if (!this.elements.get(i).canMatch(comparedPath[i]))
 					return null;
 			}
-			String generatedPath = "";
+			StringBuilder generatedPath = new StringBuilder();
 			for (PathElement pathElement : this.elements) {
-				generatedPath = generatedPath + pathElement.generateInstance(laplaceEpsilon) + ":";
+				generatedPath.append(pathElement.generateInstance(laplaceEpsilon)).append(":");
 			}
 			return generatedPath.substring(0, generatedPath.length());
 		}
@@ -82,7 +82,7 @@ public class Variant {
 	 * Sees if the given path attribute (without durations) matches this variant
 	 * and if so generates a version of the path attribute with durations
 	 * @param comparedPath Path attribute to compare (durationless)
-	 * @param laplaceEpsilon Epsilon for Laplace randomness
+	 * @param epsilon Epsilon for Laplace randomness
 	 * @return Null if not a match; path attribute with durations if match
 	 * @throws Exception Possible exception from distribution sampling
 	 */
@@ -95,9 +95,9 @@ public class Variant {
 				comparedIndex++;
 			}
 		}
-		String generatedPath = "";
+		StringBuilder generatedPath = new StringBuilder();
 		for (PathElement pathElement : this.elements) {
-			generatedPath = generatedPath + pathElement.generateInstance(epsilon) + ":";
+			generatedPath.append(pathElement.generateInstance(epsilon)).append(":");
 		}
 		return generatedPath.substring(0, generatedPath.length() - 1);
 	}
@@ -133,7 +133,7 @@ public class Variant {
 	public DistributionWrapper getDistributionWrapper() {
 		DistributionWrapper wrapper = new DistributionWrapper();
 		wrapper.setVariant(this.getTimelessPath());
-		List<EmpiricalDistribution> distributions = new ArrayList<EmpiricalDistribution>();
+		List<EmpiricalDistribution> distributions = new ArrayList<>();
 		for(PathElement element : this.elements) {
 			distributions.add(element.generateDurationDistribution());
 		}

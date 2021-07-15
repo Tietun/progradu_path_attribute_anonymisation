@@ -15,11 +15,11 @@ import org.apache.commons.math3.distribution.LaplaceDistribution;
  *
  */
 public class EmpiricalDistribution implements Distribution {
-	private static Random r = new Random();
-	private Map<Integer, Double> valueProbabilities;
+	private static final Random r = new Random();
+	private final Map<Integer, Double> valueProbabilities;
 	private double mean;
-	private double variance;
-	private double standardDeviation;
+	private final double variance;
+	private final double standardDeviation;
 	private double min;
 	private double max;
 
@@ -66,8 +66,8 @@ public class EmpiricalDistribution implements Distribution {
 		this.mean = this.mean / flatValues.size();
 
 		double minusMeanSquaredSum = 0;
-		for (int i = 0; i < flatValues.size(); i++) {
-			double minusMeanSquared = (flatValues.get(i) - mean) * (flatValues.get(i) - mean);
+		for (Integer flatValue : flatValues) {
+			double minusMeanSquared = (flatValue - mean) * (flatValue - mean);
 			minusMeanSquaredSum = minusMeanSquaredSum + minusMeanSquared;
 		}
 
@@ -82,7 +82,7 @@ public class EmpiricalDistribution implements Distribution {
 		for (Entry<Integer, Double> valueProbability : valueProbabilities.entrySet()) {
 			currentProbabilitySum = currentProbabilitySum + valueProbability.getValue();
 			if (currentProbabilitySum >= valueSeed)
-				return 0L + valueProbability.getKey();
+				return (long) valueProbability.getKey();
 		}
 		return null;
 	}
@@ -99,7 +99,7 @@ public class EmpiricalDistribution implements Distribution {
 			double range = this.max - this.min;
 			if (range <= 0) {
 				throw new Exception(
-						"Data contains events with non variable service/traveltimes. Ensure anonymization has taken place");
+						"Data contains events with non variable service/travel times. Ensure anonymization has taken place");
 			}
 			LaplaceDistribution randomnessDistribution = new LaplaceDistribution(0, range / epsilon);
 			long shiftBy = Math.round(randomnessDistribution.sample());

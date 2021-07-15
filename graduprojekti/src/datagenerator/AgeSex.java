@@ -6,8 +6,8 @@ package datagenerator;
  *
  */
 public class AgeSex {
-	private int age;
-	private Sex sex;
+	private final int age;
+	private final Sex sex;
 	
 	/**
 	 * Constructor

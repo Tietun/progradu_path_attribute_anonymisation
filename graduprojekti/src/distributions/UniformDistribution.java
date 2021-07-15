@@ -8,9 +8,9 @@ import java.util.Random;
  *
  */
 public class UniformDistribution implements Distribution{
-	private static Random r = new Random();
-	private long min;
-	private long max;
+	private static final Random r = new Random();
+	private final long min;
+	private final long max;
 	
 	/**
 	 * Constructor
@@ -24,6 +24,6 @@ public class UniformDistribution implements Distribution{
 	
 	@Override
 	public Long sample() {
-		return (long) (r.nextInt((int) max) + min);
+		return r.nextInt((int) max) + min;
 	}
 }

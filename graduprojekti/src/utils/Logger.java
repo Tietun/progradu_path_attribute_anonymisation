@@ -7,14 +7,14 @@ package utils;
  */
 public class Logger {
 	
-	private final LogLevel loglevel;
+	private final LogLevel logLevel;
 	
 	/**
 	 * Constructor
-	 * @param loglevel Log level used by the logger
+	 * @param logLevel Log level used by the logger
 	 */
-	public Logger(LogLevel loglevel) {
-		this.loglevel = loglevel;
+	public Logger(LogLevel logLevel) {
+		this.logLevel = logLevel;
 	}
 
 	/**
@@ -23,7 +23,7 @@ public class Logger {
 	 */
 	public void trace(String message) {
 		if(
-				loglevel == LogLevel.TRACE) {
+				logLevel == LogLevel.TRACE) {
 			System.out.println(message);
 		}
 	}
@@ -34,8 +34,8 @@ public class Logger {
 	 */
 	public void debug(String message) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG
 				) {
 			System.out.println(message);
 		}
@@ -47,9 +47,9 @@ public class Logger {
 	 */
 	public void info(String message) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO
 				) {
 			System.out.println(message);
 		}
@@ -61,10 +61,10 @@ public class Logger {
 	 */
 	public void warning(String message) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO ||
-				loglevel == LogLevel.WARNING
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO ||
+				logLevel == LogLevel.WARNING
 				) {
 			System.out.println(message);
 		}
@@ -77,11 +77,11 @@ public class Logger {
 	 */
 	public void error(String message, Exception e) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO ||
-				loglevel == LogLevel.WARNING ||
-				loglevel == LogLevel.ERROR
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO ||
+				logLevel == LogLevel.WARNING ||
+				logLevel == LogLevel.ERROR
 				) {
 			System.out.println(message);
 			e.printStackTrace();
@@ -95,12 +95,12 @@ public class Logger {
 	 */
 	public void critical(String message, Exception e) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO ||
-				loglevel == LogLevel.WARNING ||
-				loglevel == LogLevel.ERROR ||
-				loglevel == LogLevel.CRITICAL
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO ||
+				logLevel == LogLevel.WARNING ||
+				logLevel == LogLevel.ERROR ||
+				logLevel == LogLevel.CRITICAL
 				) {
 			System.out.println(message);
 			e.printStackTrace();
@@ -113,11 +113,11 @@ public class Logger {
 	 */
 	public void error(String message) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO ||
-				loglevel == LogLevel.WARNING ||
-				loglevel == LogLevel.ERROR
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO ||
+				logLevel == LogLevel.WARNING ||
+				logLevel == LogLevel.ERROR
 				) {
 			System.out.println(message);
 		}
@@ -129,12 +129,12 @@ public class Logger {
 	 */
 	public void critical(String message) {
 		if(
-				loglevel == LogLevel.TRACE ||
-				loglevel == LogLevel.DEBUG ||
-				loglevel == LogLevel.INFO ||
-				loglevel == LogLevel.WARNING ||
-				loglevel == LogLevel.ERROR ||
-				loglevel == LogLevel.CRITICAL
+				logLevel == LogLevel.TRACE ||
+				logLevel == LogLevel.DEBUG ||
+				logLevel == LogLevel.INFO ||
+				logLevel == LogLevel.WARNING ||
+				logLevel == LogLevel.ERROR ||
+				logLevel == LogLevel.CRITICAL
 				) {
 			System.out.println(message);
 		}

@@ -29,7 +29,7 @@ public class EventElement extends PathElement{
 	public boolean canMatch(String comparedElement) {
 		if(comparedElement.length() > 0) {
 			if(comparedElement.charAt(0) != '(') {
-				if(comparedElement.substring(0, comparedElement.indexOf('(')).equals(activity)) return true;
+				return comparedElement.substring(0, comparedElement.indexOf('(')).equals(activity);
 			}
 		}
 		return false;

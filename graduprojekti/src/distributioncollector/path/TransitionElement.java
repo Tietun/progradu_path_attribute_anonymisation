@@ -25,8 +25,7 @@ public class TransitionElement extends PathElement{
 
 	@Override
 	public boolean canMatch(String comparedElement) {
-		if(comparedElement.length() > 0 && comparedElement.charAt(0) == '(') return true;
-		return false;
+		return comparedElement.length() > 0 && comparedElement.charAt(0) == '(';
 	}
 
 	@Override

@@ -8,9 +8,9 @@ import java.util.Random;
  *
  */
 public class AgeDistribution {
-	private static Random rand = new Random();
-	private int[] countCumulativeFemale; //All positive or 0;
-	private int[] reverseCountCumulativeMale; //All negative;
+	private static final Random rand = new Random();
+	private final int[] countCumulativeFemale; //All positive or 0;
+	private final int[] reverseCountCumulativeMale; //All negative;
 	
 	/**
 	 * Constructor
@@ -21,7 +21,7 @@ public class AgeDistribution {
 		this.countCumulativeFemale = countCumulativeFemale;
 		this.reverseCountCumulativeMale = new int[countCumulativeMale.length];
 		for(int i = 0; i < countCumulativeMale.length; i++) {
-			reverseCountCumulativeMale[i] = 0 - countCumulativeMale[i];
+			reverseCountCumulativeMale[i] = -countCumulativeMale[i];
 		}
 	}
 	

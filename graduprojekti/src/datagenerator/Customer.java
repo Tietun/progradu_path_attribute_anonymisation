@@ -15,15 +15,15 @@ import java.util.Random;
  *
  */
 public class Customer {
-	private static Random rand = new Random();
+	private static final Random rand = new Random();
 	private String nationalID;
 	private LocalDate dateOfBirth;
 	private Sex sex;
 	@SuppressWarnings("unused") // May be used later
-	private Map<String, String> customerAttributes;
-	private List<Event> events;
+	private final Map<String, String> customerAttributes;
+	private final List<Event> events;
 	//Check symbols for finnish national identification number
-	private static char[] checkSymbols = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y'};
+	private static final char[] checkSymbols = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y'};
 
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ public class Customer {
 	 */
 	public Customer(LocalDateTime currentTime) {
 		this.setAgeAndSex(currentTime);
-		this.customerAttributes = new HashMap<String, String>();
+		this.customerAttributes = new HashMap<>();
 		this.events = new ArrayList<>();
 	}
 	
@@ -42,7 +42,7 @@ public class Customer {
 	private void setAgeAndSex(LocalDateTime currentTime) {
 		int yearOfBirth = 2020;
 		while(yearOfBirth > 2010) {
-			AgeSex ageSex = AgeDistributions.finlandCurrent.getRandomAgeAndSex();
+			AgeSex ageSex = AgeDistributions.FINLAND_CURRENT.getRandomAgeAndSex();
 			this.sex = ageSex.getSex();
 			yearOfBirth = currentTime.getYear() - ageSex.getAge();
 		}
@@ -95,25 +95,25 @@ public class Customer {
 	 * @return CSV friendly String containing info on the customer's events
 	 */
 	public String getEventLines() {
-		String lines = "";
+		StringBuilder lines = new StringBuilder();
 		for(Event e : this.events) {
-			String line = this.nationalID + ";" + e.getValueLine() + ";" + this.sex + ";";
+			StringBuilder line = new StringBuilder(this.nationalID + ";" + e.getValueLine() + ";" + this.sex + ";");
 				for(Event event : this.events) {
-					line = line + event.getSummary() + ":";
+					line.append(event.getSummary()).append(":");
 					if(this.events.size() > (this.events.indexOf(event) + 1)) {
-						line = line + "(" + (Duration.between(event.getEndTime(), this.events.get(this.events.indexOf(event) + 1).getStartTime()).getSeconds()) + "):";
+						line.append("(").append(Duration.between(event.getEndTime(), this.events.get(this.events.indexOf(event) + 1).getStartTime()).getSeconds()).append("):");
 					}
 				}
-			line = line.substring(0, line.length()-1);
-			line = line + System.lineSeparator();
-			lines = lines + line;
+			line = new StringBuilder(line.substring(0, line.length() - 1));
+			line.append(System.lineSeparator());
+			lines.append(line);
 		}
-		lines = lines.substring(0, lines.length()-1);
-		return lines;
+		lines = new StringBuilder(lines.substring(0, lines.length() - 1));
+		return lines.toString();
 	}
 
 	/**
-	 * Add's an event to the Customer
+	 * Adds an event to the Customer
 	 * @param event The event to be added
 	 */
 	public void addEvent(Event event) {
@@ -125,17 +125,17 @@ public class Customer {
 	 * @return The Customer's events in the path attribute format
 	 */
 	public String getPathAttribute() {
-		String line = "";
+		StringBuilder line = new StringBuilder();
 		for(Event event : this.events) {
-			line = line + event.getSummary() + ":";
+			line.append(event.getSummary()).append(":");
 			if(this.events.size() > (this.events.indexOf(event) + 1)) {
 				Duration duration = Duration.between(event.getEndTime(), this.events.get(this.events.indexOf(event) + 1).getStartTime());
 				long durationSeconds = duration.getSeconds();
-				line = line + "(" + (durationSeconds / 60) + "):";
+				line.append("(").append(durationSeconds / 60).append("):");
 			}
 		}
-		line = line.substring(0, line.length()-1) + System.lineSeparator();
-		return line;
+		line = new StringBuilder(line.substring(0, line.length() - 1) + System.lineSeparator());
+		return line.toString();
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class Customer {
 	 */
 	public String getFirstStart() {
 		if(this.events.size() > 0) {
-			return this.events.get(0).startTime.toString().replace('T', ' ') + ":00";
+			return this.events.get(0).getStartTime().toString().replace('T', ' ') + ":00";
 		}
 		return "";
 	}

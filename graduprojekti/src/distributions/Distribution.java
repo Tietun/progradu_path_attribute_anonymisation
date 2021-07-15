@@ -11,5 +11,5 @@ public interface Distribution {
 	 * Samples the distribution
 	 * @return A value sampled from the distribution
 	 */
-	public Long sample();
+	Long sample();
 }

@@ -14,7 +14,7 @@ import distributions.EmpiricalDistribution;
  *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = EventElement.class, name = "EventElement"),
     @JsonSubTypes.Type(value = TransitionElement.class, name = "TransitionElement") }
@@ -65,7 +65,7 @@ public abstract class PathElement {
 	
 	/**
 	 * Generates a distribution based on found instances
-	 * @return
+	 * @return An empirical distribution based on the instances
 	 */
 	public EmpiricalDistribution generateDurationDistribution() {
 		return new EmpiricalDistribution(this.durationInstances, this.totalDurationInstances);
