@@ -1,11 +1,12 @@
 package distributioncollector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import distributioncollector.path.EventElement;
 import distributioncollector.path.PathElement;
+import distributioncollector.path.TransitionElement;
 import distributions.EmpiricalDistribution;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An object representing a possible path through a care pathway
@@ -33,6 +34,31 @@ public class Variant {
 	public Variant(ElementListWrapper wrapper) {
 		this.elements = wrapper.getElementList();
 	}
+
+	private Variant(List<Variant> componentVariants, String[] structure) {
+		this.elements = new ArrayList<>();
+		if(componentVariants.size() == 0) return;
+		int eventElementIndex = 0;
+		for(int i = 0; i < componentVariants.get(0).getElementCount(); i++){
+			List<PathElement> elements = new ArrayList<>();
+			for(Variant componentVariant : componentVariants){
+				elements.add(componentVariant.elements.get(i));
+			}
+			if(elements.size() > 0) {
+				if(elements.get(0) instanceof EventElement){
+					this.elements.add(EventElement.compoundElementFrom(elements, structure[eventElementIndex]));
+					eventElementIndex++;
+				} else {
+					this.elements.add(TransitionElement.compoundElementFrom(elements));
+				}
+			}
+		}
+	}
+
+	private int getElementCount() {
+		return elements.size();
+	}
+
 
 	/**
 	 * Sees if the given path attribute (with durations) can match this variant
@@ -139,6 +165,41 @@ public class Variant {
 		}
 		wrapper.setDistributions(distributions);
 		return wrapper;
+	}
+
+	public static String findBestMatchesAndGenerate(List<Variant> variants, String[] carePathSplit, double epsilon) throws Exception {
+		List<Integer> variantMatchCounts = new ArrayList<>();
+		int maxMatches = -1;
+		for(Variant variant : variants){
+			int matchCount = variant.numberOfMatches(carePathSplit);
+			variantMatchCounts.add(variant.numberOfMatches(carePathSplit));
+			if(matchCount > maxMatches) maxMatches = matchCount;
+		}
+		List<Variant> variantToGenerateFrom = new ArrayList<>();
+		for(int i = 0; i < variantMatchCounts.size(); i++){
+			if(variantMatchCounts.get(i) == maxMatches){
+				variantToGenerateFrom.add(variants.get(i));
+			}
+		}
+		Variant compoundVariant = new Variant(variantToGenerateFrom, carePathSplit);
+		StringBuilder generatedPath = new StringBuilder();
+		for (PathElement pathElement : compoundVariant.elements) {
+			generatedPath.append(pathElement.generateInstance(epsilon)).append(":");
+		}
+		return generatedPath.substring(0, generatedPath.length() - 1);
+	}
+
+	private Integer numberOfMatches(String[] comparedPath) {
+		int matchCount = 0;
+		int index = 0;
+		for(PathElement element : this.elements) {
+			if(element instanceof EventElement) {
+				String activity = ((EventElement)element).getActivity();
+				if(activity.equals(comparedPath[index])) matchCount++;
+				index++;
+			}
+		}
+		return matchCount;
 	}
 
 }

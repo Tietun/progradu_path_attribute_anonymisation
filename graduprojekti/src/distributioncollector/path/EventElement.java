@@ -1,5 +1,9 @@
 package distributioncollector.path;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Path element representing an event in a care path of a Customer
  * @author Erkka Nurmi
@@ -25,7 +29,33 @@ public class EventElement extends PathElement{
 		super();
 	}
 
-	@Override
+	private EventElement(String activity) {
+		this.activity = activity;
+	}
+
+	public static PathElement compoundElementFrom(List<PathElement> elements, String activity) {
+		EventElement eventElement = new EventElement(activity);
+		Map<Integer, Integer> durationInstances = new HashMap<>();
+		for(PathElement element : elements){
+			for(Integer durationInstanceToAdd : element.getDurationInstances().keySet()){
+				if(durationInstances.containsKey(durationInstanceToAdd)){
+					durationInstances.put(
+							durationInstanceToAdd,
+							durationInstances.get(durationInstanceToAdd) + element.getDurationInstances().get(durationInstanceToAdd)
+					);
+				} else {
+					durationInstances.put(
+							durationInstanceToAdd,
+							element.getDurationInstances().get(durationInstanceToAdd)
+					);
+				}
+			}
+		}
+		eventElement.setDurationInstances(durationInstances);
+		return eventElement;
+    }
+
+    @Override
 	public boolean canMatch(String comparedElement) {
 		if(comparedElement.length() > 0) {
 			if(comparedElement.charAt(0) != '(') {

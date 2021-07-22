@@ -1,5 +1,9 @@
 package distributioncollector.path;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * @author Erkka Nurmi
@@ -23,7 +27,29 @@ public class TransitionElement extends PathElement{
 		super();
 	}
 
-	@Override
+    public static PathElement compoundElementFrom(List<PathElement> elements) {
+		TransitionElement transitionElement = new TransitionElement();
+		Map<Integer, Integer> durationInstances = new HashMap<>();
+		for(PathElement element : elements){
+			for(Integer durationInstanceToAdd : element.getDurationInstances().keySet()){
+				if(durationInstances.containsKey(durationInstanceToAdd)){
+					durationInstances.put(
+							durationInstanceToAdd,
+							durationInstances.get(durationInstanceToAdd) + element.getDurationInstances().get(durationInstanceToAdd)
+					);
+				} else {
+					durationInstances.put(
+							durationInstanceToAdd,
+							element.getDurationInstances().get(durationInstanceToAdd)
+					);
+				}
+			}
+		}
+		transitionElement.setDurationInstances(durationInstances);
+		return transitionElement;
+    }
+
+    @Override
 	public boolean canMatch(String comparedElement) {
 		return comparedElement.length() > 0 && comparedElement.charAt(0) == '(';
 	}

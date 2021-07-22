@@ -92,10 +92,14 @@ public class DistributionGenerator {
 				if(structureMatches(splitLine[carePathIndex], splitLine[originalCarePathIndex])){
 					retimedPath = splitLine[originalCarePathIndex];
 				} else  {
+					String[] carePathSplit = splitLine[carePathIndex].split(":");
 					for (Variant variant : variants) {
-						retimedPath = variant.matchTimelessAndGenerate(splitLine[carePathIndex].split(":"), epsilon);
+						retimedPath = variant.matchTimelessAndGenerate(carePathSplit, epsilon);
 						if (retimedPath != null)
 							break;
+					}
+					if(retimedPath == null){
+						retimedPath = Variant.findBestMatchesAndGenerate(variants, carePathSplit, epsilon);
 					}
 				}
 				retimedLine.append(retimedPath).append(";");
