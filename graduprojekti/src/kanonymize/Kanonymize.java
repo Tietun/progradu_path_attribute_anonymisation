@@ -1,8 +1,6 @@
 package kanonymize;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
@@ -44,6 +42,10 @@ public class Kanonymize {
         return selectedColumn;
     }
 
+    public static void writeLineToFile() {
+
+    }
+
     public static void anonymize(String filePath, String columnName, Integer k) throws IOException {
         ArrayList<ArrayList<String>> columns = readCsvColumns(filePath);
         ArrayList<String> column = findColumnByName(columns, columnName);
@@ -56,11 +58,19 @@ public class Kanonymize {
                 .filter(entry -> entry.getValue() <= k)
                 .collect(Collectors.toSet());
 
+
+        File file = new File("out.txt");
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+
+
         for(var element : belowK)
             column.set(column.indexOf(element.getKey()), element.getKey().replaceFirst("E[0-9]", "E#"));
         for(var element : column) {
-            System.out.println(element);
+            bufferedWriter.write(element);
+            bufferedWriter.newLine();
         }
+        bufferedWriter.close();
     }
 
     public static void main(String[] args) {
