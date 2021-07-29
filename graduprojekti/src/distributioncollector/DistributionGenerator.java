@@ -81,8 +81,11 @@ public class DistributionGenerator {
 				}
 			}
 			line = dataReader.readLine();
+			int index = 0;
 			//We generate output lines with the generated variants
 			while (line != null) {
+				System.out.println(index);
+				index++;
 				splitLine = line.split(";");
 				StringBuilder retimedLine = new StringBuilder();
 				for (int i = 0; i < carePathIndex; i++) {
