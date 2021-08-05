@@ -65,7 +65,7 @@ public class Kanonymize {
 
 
         for(var element : belowK)
-            column.set(column.indexOf(element.getKey()), element.getKey().replaceFirst("E[0-9]", "E#"));
+            column.set(column.indexOf(element.getKey()), element.getKey().replaceFirst("E[0-9]", "Ex"));
         for(var element : column) {
             bufferedWriter.write(element);
             bufferedWriter.newLine();
